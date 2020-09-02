@@ -1,6 +1,7 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
+
+let express = require('express'),
+  app = express();
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -36,6 +37,6 @@ app.get('/canvas/:game?', function(req, res) {
   res.render('pages/canvas', {game: req.params.game || ''});
 });
 
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`App listening at http://localhost:${PORT}`)
 })
