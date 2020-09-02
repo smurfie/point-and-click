@@ -1,0 +1,18 @@
+* {
+	font-family: cursive;
+}
+
+body {
+	margin: 0;
+	background-color: burlywood;
+}
+
+#iframeContainer iframe {
+	display: block;
+	border: none;
+	margin: auto;
+}
+
+.textCenter {
+	text-align: center;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title><%= game %></title>
+		<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+		<link rel="stylesheet" type="text/css" href="/lib/dialog-polyfill/dialog-polyfill.css" />
+		<link rel="stylesheet" type="text/css" href="/css/main.css">
+		<jsp:include page="includes/analytics.jsp" />
+	</head>
+	<body>
+		<div id="canvas"></div>
+		<div id="loadingCanvas"></div>
+		<div id="conversation">
+			<div id="conversationImg"></div>
+			<div id="conversationText"></div>
+			<div id="conversationNext"></div>
+			<div id="conversationOptions"></div>
+		</div>
+		<div id="inventory"></div>
+		<p id="text"></p>
+		<div id="options">
+			<div id="languageOptions"></div>
+			<div id="okCancelOptions">
+				<img id="cancelOption" src="/img/menu/cancel.png" />
+				<img id="okOption" src="/img/menu/ok.png" />
+			</div>
+		</div>
+	</body>
+	<dialog id="modalText">
+		<p></p>
+	</dialog>
+	<script type="text/javascript">
+		var stagename='<%= game %>';
+		var filename = stagename!="" ? "/stage/" + stagename + "/stage.json" : "";
+	</script>
+	<script src="/js/jquery-2.1.4.min.js"></script>
+	<script src="/lib/dialog-polyfill/dialog-polyfill.js"></script>
+	<script src="/js/main.js"></script>
+	<script src="/js/constants.js"></script>
+	<script src="/js/version.js"></script>
+	<script src="/js/actions.js"></script>
+	<script src="/js/conditions.js"></script>
+	<script src="/js/cursors.js"></script>
+	<script src="/js/languages.js"></script>
+	<script src="/js/util.js"></script>
+</html>

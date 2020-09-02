@@ -1,0 +1,23 @@
+{
+  "name": "point-and-click",
+  "version": "1.0.0",
+  "description": "Point and click game editor and engine for web browsers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smurfie/point-and-click.git"
+  },
+  "author": "Joan Fluvia <joanfluvia@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smurfie/point-and-click/issues"
+  },
+  "homepage": "https://github.com/smurfie/point-and-click#readme",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1"
+  }
+}

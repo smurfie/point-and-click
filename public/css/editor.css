@@ -1,0 +1,247 @@
+html {
+	box-sizing: border-box;
+}
+
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+#downMenu {
+	position: absolute;
+	top: 550px;
+	margin: 10px;
+	height: 23px;
+}
+
+#folderName {
+	width: 100px;
+}
+
+#stageName {
+	width: 150px;
+}
+
+#canvasWidth {
+	width: 135px;
+}
+
+#defaultLanguage {
+	color: red;
+}
+
+#rightMenu {
+	position: absolute;
+	top: 0;
+	left: 970px;
+	margin: 10px;
+	height: 23px;
+}
+
+ul#navList {
+	list-style-type: none;
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+
+ul#navList li {
+	float: left;
+	width: 12%;
+	padding: 5px;
+	text-align: center;
+	display: inline-block;
+}
+
+ul#navList li.active {
+	background: lightgray;
+}
+
+ul#navList li a {
+	display: inline-block;
+}
+
+#screenList, #areaList, #screenImageList {
+	min-width: 150px;
+}
+
+#actionTalkList, #filterTalk {
+	min-width: 600px;
+	max-width: 1000px;
+}
+
+dialog input, dialog button {
+	float: right;
+}
+
+dialog input[type=checkbox], dialog input[type=radio] {
+	float: none;
+}
+
+dialog button {
+	margin: 0px 5px 5px 5px;
+}
+
+.ui-draggable-handle {
+	outline: solid yellow;
+}
+
+.ui-draggable-handle.hidden {
+	outline: solid orange;
+}
+
+#canvas.noLineAreas .ui-draggable-handle {
+	outline: none;
+}
+
+#canvas.visibleAreas .ui-draggable-handle.hidden {
+	display: none;
+}
+
+.ui-draggable-handle.selected {
+	outline: solid red;
+}
+
+.ui-draggable-handle.hidden.selected {
+	outline: solid maroon;
+}
+
+.description {
+	width: 325px;
+	height: 60px;
+}
+
+.moveArea {
+	width: 50px;
+}
+
+#getJSONModal textarea, #loadJSONModal textarea {
+	width: 700px;
+	height: 200px;
+}
+
+#interactionConditionList, #interactionActionList, #answerList {
+	width: 500px;
+}
+
+#objectiveList, #conditionMixtureList, #actionMixtureList {
+	width: 300px;
+}
+
+#mixture1List, #mixture2List {
+	width: 175px;
+}
+
+#mixture1Filter, #mixture2Filter {
+	width: 175px;
+}
+
+#objectImgDOM, #stackImgDOM, #characterImgDOM {
+	width: 70px;
+	height: 70px;
+}
+
+#objectDescription, #stackDescription {
+	width: 285px;
+	height: 64px;
+}
+
+option.hasValue {
+	background-color: limegreen;
+}
+
+dialog::backdrop {
+	background: rgba(0,0,0,0.5);
+}
+
+#conditionObjectNum, #actionObjectNum {
+	width: 50px;
+	float: none;
+}
+
+#characterPropertiesCol1 {
+	width: 285px;
+	float: left;
+}
+
+#characterPropertiesCol2 {
+	width: 70px;
+	float: left;
+}
+
+#characterFontColor {
+	width: 100px;
+	margin-right: 20px;
+}
+
+#talkList {
+	width: calc(100% - 50px);
+}
+
+#answerText {
+	width: 500px;
+	height: 100px;
+}
+
+#answerInteractionsButton {
+	float: none;
+}
+
+.right {
+	float: right;
+}
+
+.row {
+	float: left;
+	clear: both;
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+/* Help Tooltip */
+.help-tooltip {
+	display: inline-block;
+	margin: 0 5px;
+	top: 18px;
+	right: 18px;
+	text-align: center;
+	background-color: #BCDBEA;
+	border-radius: 50%;
+	width: 18px;
+	height: 18px;
+	font-size: 14px;
+}
+
+.help-tooltip:before {
+	content: '?';
+	font-weight: bold;
+	color: #fff;
+}
+
+.help-tooltip:hover p {
+	display: block;
+	transform-origin: 100% 0%;
+	-webkit-animation: fadeIn 0.3s ease-in-out;
+	animation: fadeIn 0.3s ease-in-out;
+}
+
+.help-tooltip p {
+	display: none;
+	text-align: left;
+	background-color: #1E2021;
+	padding: 20px;
+	margin: 6px 0;
+	width: 300px;
+	position: absolute;
+	margin-left: -276px;
+	border-radius: 3px;
+	color: #FFF;
+	z-index: 101;
+}
+
+.help-tooltip p:before {
+	position: absolute;
+	content: '';
+	border: 6px solid transparent;
+	border-bottom-color: #1E2021;
+	right: 10px;
+	top: -12px;
+}

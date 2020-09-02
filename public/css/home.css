@@ -1,0 +1,24 @@
+* {
+	font-family: cursive;
+}
+
+body {
+	background-color: burlywood;
+}
+
+a {
+	color: brown;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:active {
+	color: red;
+}
+
+.font12 {
+	font-size: 12px;
+}

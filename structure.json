@@ -1,0 +1,145 @@
+stage = {
+	name:..,
+	folderName:..,
+	initialScreen:..,
+	width:..,
+	screens: {
+		id: {
+			name:..,
+			images:{
+				id: {
+					name:..,
+					img:..
+				}
+			},
+			defaultImage: imageId,
+			areas:{
+				id: {
+					name:..,
+					states: {
+						default: { 
+							name: ..,
+							img:..,
+							description: textId,
+							cursor:..,
+							top:..,
+							left:..,
+							width:..,
+							height:..,
+							zindex:..,
+							alpha:..,
+							hidden:..,
+							...
+						},
+						idState: { 
+							name: ..,
+							img:..,
+							description: textId,
+							...
+						}
+					},
+					interactions: [
+						{
+							onlyOnce: ..,
+							conditions: [{typeId,negate,..}],
+							actions: [{typeId:,..}]
+						}
+					]
+				}
+			}
+		}
+	},
+	objects: { //Inventory objects that don't change (instead can be destroyed and added another one), can stack...
+		id: {
+			name:..,
+			img:..,
+			description: textId,
+			stacks:[{ //Ordered list saying the minNumber for which is applicable (for money for example)
+				minNumber:..,
+				img:..,
+				description: textId,
+			}, {},..]
+		}	
+	},
+	objectives: {id:{name:xx},...},
+	mixtures: {
+		description: textId, (default for any mixture)
+		obj1id: {
+			description: textId, (default for any mixture using obj1)
+			obj2id or screenId_areaId: {
+				interactions: [
+					{
+						onlyOnce: ..,
+						conditions: [{typeId,negate,..}],
+						actions: [{typeId:,..}]
+					}
+				]
+			}
+		}
+	},
+	triggers: [
+		{
+			name,
+			onlyOnce,
+			conditions: [{typeId,negate,..}],
+			actions: [{typeId:,..}]
+		}
+	],
+	texts: {
+		id: {
+			en_US: ..., //At least one language is requires (the default one)
+			es_ES: ..., //Optional
+			...
+		}
+	},
+	characters: { //If characters is not empty mainCharacter has to exist
+		id: {
+			name: textId,
+			img,
+			fontColor (default: green)
+		}
+	},
+	mainCharacter: characterId,
+	talks: {
+		id: {
+			characterId,
+			answers: [ //At least one answer has to be always possible, if only one answer is possible it is triggered automatically
+				{
+					text: textId,
+					conditions, //To show or not the option
+					interactions, //Once the option is clicked
+				},
+				...
+			]
+		}
+	},
+	defaultLanguage: "en_US",
+	languages: {
+		id: "name" //Example "en_US": "English"
+	}
+}
+
+conditions:
+	HAS_OBJECT: object, num
+	OBJECTIVE_COMPLETED: objective
+	AREA_HAS_STATE: screen, area, state
+actions:
+	GO_TO: screen
+	PICK_UP_OBJECT: object, num
+	REMOVE_OBJECT: object, num
+	HIDE_AREA: screen, area
+	SHOW_AREA: screen, area
+	SHOW_TEXT: text: textId
+	COMPLETE_OBJECTIVE: objective
+	AREA_CHANGE_STATE: screen, area, state
+	SCREEN_CHANGE_IMAGE: screen, image
+	TALK: talk
+
+/* Not implemented */
+savegame = {
+	inventory: [{object, num},..],
+	screens{
+		id: {area:{state:..},...},... //Objects removed/hidden
+	}
+	objectivesCompleted:
+}

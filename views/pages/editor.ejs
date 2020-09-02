@@ -1,0 +1,582 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>Point and Click - Editor</title>
+		<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+		<link rel="stylesheet" type="text/css" href="/js/jquery-ui/jquery-ui.css"/>
+		<link rel="stylesheet" href="/css/main.css">
+		<link rel="stylesheet" href="/css/editor.css">
+		<jsp:include page="includes/analytics.jsp" />
+	</head>
+	<body>
+		<div id="canvas"></div>
+		<div id="rightMenu">
+			<ul id="navList" class="row">
+				<li data-id="screensMenu" class="active">
+					<a href="javascript:void()" title="Screens">
+						<img src="/img/menu/screens.png" width="32">
+					</a>
+				</li>
+				<li data-id="areasMenu" style="display:none">
+					<a href="javascript:void()" title="Areas">
+						<img src="/img/menu/areas.png" width="32">
+					</a>
+				</li>
+				<li data-id="objectsMenu">
+					<a href="javascript:void()" title="Objects">
+						<img src="/img/menu/objects.png" width="32">
+					</a>
+				</li>
+				<li data-id="objectivesMenu">
+					<a href="javascript:void()" title="Objectives">
+						<img src="/img/menu/objectives.png" width="32">
+					</a>
+				</li>
+				<li data-id="mixturesMenu">
+					<a href="javascript:void()" title="Mixtures">
+						<img src="/img/menu/mixtures.png" width="32">
+					</a>
+				</li>
+				<li data-id="triggersMenu">
+					<a href="javascript:void()" title="Triggers">
+						<img src="/img/menu/triggers.png" width="32">
+					</a>
+				</li>
+				<li data-id="charactersMenu">
+					<a href="javascript:void()" title="Characters and Talks">
+						<img src="/img/menu/characters.png" width="32">
+					</a>
+				</li>
+				<li data-id="languagesMenu">
+					<a href="javascript:void()" title="Languages">
+						<img src="/img/menu/languages.png" width="32">
+					</a>
+				</li>
+			</ul>
+			<div id="screensMenu" class="tab row">
+				<div class="row">
+					<select id="screenList"></select>
+					<button id="editScreenButton">Edit</button>
+					<button id="addScreenButton">Add</button>
+					<button id="delScreenButton">Del</button>
+				</div>
+				<div id="initialScreenDiv" class="row">Start: <input id="initialScreen" type="checkbox"/></div>
+				<div id="screenImageListDiv" class="row">
+					<div class="row">
+						Images:
+						<button id="editScreenImageButton">Edit</button>
+						<button id="addScreenImageButton">Add</button>
+						<button id="delScreenImageButton">Del</button>
+						<button id="makeDefaultScreenImageButton">Make Default</button>
+					</div>
+					<select id="screenImageList" class="row" size="3"></select>
+				</div>
+			</div>
+			<div id="areasMenu" style="display:none" class="tab row">
+				<div class="row">
+					<select id="areaList"></select>
+					<button id="editAreaButton">Edit</button>
+					<button id="addAreaButton">Add</button>
+					<button id="delAreaButton">Del</button>
+				</div>
+				<div id="areaProperties" class="row" style="display:none">
+					<div class="row">
+						<span>States:</span> 
+						<select id="stateList"></select>
+						<button id="editStateButton">Edit</button>
+						<button id="addStateButton">Add</button>
+						<button id="delStateButton">Del</button>
+						<div class="help-tooltip">
+							<p>Each state inherits the values of the "default" state and can override their values.</p>
+						</div>
+					</div>
+					<div id="areaScreenProperties">
+						<div class="row">
+							Img: <input id="areaImg" class="updateArea" type="text" title="/stage/xxx/img/areas/... or http://..."
+									placeholder="/stage/xxx/img/areas/... or http://..."/>
+						</div>
+						<textarea id="areaDescription" class="updateArea description row" placeholder="Description..."></textarea>
+					</div>
+					<div class="row">
+						X: <input id="areaX" class="updateArea moveArea" type="text"/>
+						Y: <input id="areaY" class="updateArea moveArea" type="text"/>
+						W: <input id="areaW" class="updateArea moveArea" type="text"/>
+						H: <input id="areaH" class="updateArea moveArea" type="text"/>
+					</div>
+					<div class="row">
+						Z-Index: <input id="areaZ" class="updateArea moveArea" type="text"/>
+						Alpha: <input id="areaA" class="updateArea moveArea" type="text"/>
+					</div>
+					<div class="row">
+						<select id="areaCursor" class="updateArea"></select>
+						Hidden: <input id="areaHidden" class="updateArea" type="checkbox"/>
+					</div>
+					<hr>
+					<div class="row">
+						<button id="areaInteractionsButton">Interactions (<span class="interactionsNumber"></span>)</button>
+						<div class="help-tooltip">
+							<p>Only the first interaction that meets all conditions get all his actions executed.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="objectsMenu" style="display:none" class="tab row">
+				<div class="row">
+					<select id="objectList"></select>
+					<button id="editObjectButton">Edit</button>
+					<button id="addObjectButton">Add</button>
+					<button id="delObjectButton">Del</button>
+				</div>
+				<div id="objectProperties" style="display:none">
+					<div class="row">
+						Img: <input id="objectImg" class="updateObject" type="text" title="/stage/xxx/img/objects/... or http://..."
+								placeholder="/stage/xxx/img/objects/... or http://..."/>
+					</div>
+					<div class="row">
+						<textarea id="objectDescription" class="updateObject description" placeholder="Description..."></textarea>
+						<img id="objectImgDOM">
+					</div>
+					<hr>
+					<div class="row">
+						Stack: <select id="stackList"></select>
+						<button id="addStackButton">Add</button>
+						<button id="delStackButton">Del</button>
+					</div>
+					<div id="stackProperties">
+						<div class="row">
+							Num: <input id="stackNum" class="updateStack" type="number" min="2" step="1" placeholder="Minimum number..."/>
+						</div>
+						<div class="row">
+							Img: <input id="stackImg" class="updateStack" type="text" title="/stage/xxx/img/objects/... or http://..."
+									placeholder="/stage/xxx/img/objects/... or http://..."/>
+						</div>
+						<div class="row">
+							<textarea id="stackDescription" class="updateStack description" placeholder="Description..."></textarea>
+							<img id="stackImgDOM">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="objectivesMenu" style="display:none" class="tab row">
+				<div class="row">
+					Objectives:
+					<button id="editObjectiveButton">Edit</button>
+					<button id="addObjectiveButton">Add</button>
+					<button id="delObjectiveButton">Del</button>
+				</div>
+				<select id="objectiveList" class="row" size=15></select>
+				<span id="selectedObjective" class="row"></span>
+			</div>
+			<div id="mixturesMenu" style="display:none" class="tab row">
+				<textarea id="mixtureDescription" class="description row" placeholder="Default mixture description..."></textarea>
+				<div class="row">
+					Choose your mixture:
+					<span class="right">
+						<input type="checkbox" id="hideGoTo">Hide goTos
+					</span>
+				</div>
+				<div class="row">
+					<input id="mixture1Filter" type="text" placeholder="Filter"/>
+					<input id="mixture2Filter" type="text" placeholder="Filter"/>
+				</div>
+				<div class="row">
+					<select id="mixture1List" size=10></select>
+					<select id="mixture2List" size=10></select>
+				</div>
+				<textarea id="mixture1Description" class="description row" placeholder="Default mixture description for this object..."></textarea>
+				<div id="mixtureProperties row">
+					<button id="mixtureInteractionsButton">Interactions (<span class="interactionsNumber"></span>)</button>
+				</div>
+			</div>
+			<div id="triggersMenu" style="display:none" class="tab row">
+				<div class="row">
+					Triggers:
+					<button id="editTriggerButton">Edit</button>
+					<button id="addTriggerButton">Add</button>
+					<button id="delTriggerButton">Del</button>
+				</div>
+				<select id="triggerList" class="row" size=10></select>
+				<div class="row">
+					- Conditions:
+					<button id="editTriggerConditionButton">Edit</button>
+					<button id="addTriggerConditionButton">Add</button>
+					<button id="delTriggerConditionButton">Del</button>
+					<button id="downTriggerConditionButton">Down</button>
+					<button id="upTriggerConditionButton">Up</button>
+				</div>
+				<select id="triggerConditionList" class="row" size=3></select>
+				<div class="row">
+					- Actions:
+					<button id="editTriggerActionButton">Edit</button>
+					<button id="addTriggerActionButton">Add</button>
+					<button id="delTriggerActionButton">Del</button>
+					<button id="downTriggerActionButton">Down</button>
+					<button id="upTriggerActionButton">Up</button>
+				</div>
+				<select id="triggerActionList" class="row" size=3></select>
+			</div>
+			<div id="charactersMenu" style="display:none" class="tab row">
+				<div class="row">
+					<select id="characterList"></select>
+					<button id="editCharacterButton">Edit</button>
+					<button id="addCharacterButton">Add</button>
+					<button id="delCharacterButton">Del</button>
+				</div>
+				<div id="characterProperties" style="display:none" class="row">
+					<div id="characterPropertiesCol1">
+						<div class="row">
+							Img: <input id="characterImg" class="updateCharacter" type="text" title="/stage/xxx/img/characters/... or http://..."
+									placeholder="/stage/xxx/img/characters/... or http://..."/>
+						</div>
+						<div class="row">
+							Font color: <input id="characterFontColor" class="updateCharacter"><span id="characterFontColorDiv">ZPG</span>
+						</div>
+						<div class="row">
+							Main Character: <input id="mainCharacter" class="updateCharacter" type="checkbox"/>
+						</div>
+					</div>
+					<div id="characterPropertiesCol2">
+						<img id="characterImgDOM">
+					</div>
+				</div>
+				<hr>
+				<div id="characterTalks" style="display:none" class="row">
+					<div class="row">
+						Talks: <select id="talkList"></select>
+					</div>
+					<div class="row">
+						<button id="editTalkButton">Edit</button>
+						<button id="addTalkButton">Add</button>
+						<button id="delTalkButton">Del</button>
+					</div>
+				</div>
+			</div>
+			<div id="languagesMenu" style="display:none" class="tab row">
+				<div class="row">
+					<select id="languageList"></select>
+					<div class="row">
+						Default: <input id="defaultLanguageCheck" type="checkbox"/>
+					</div>
+					<button id="addLanguageButton">Add</button>
+					<button id="delLanguageButton">Del</button>
+				</div>
+				<div class="row">
+					<button id="exportLanguageButton">Export</button>
+					<button id="importLanguageButton">Import</button>
+					<input id="importLanguageFile" type="file" hidden>
+					<div class="help-tooltip">
+						<p>When importing it is important to follow the same format as in the export. So, in each line: "id|||text|||"</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="downMenu">
+			<button id="tryItButton">Try it!</button>
+			<button id="getJSONButton">Get json</button>
+			<button id="loadJSONButton">Load json</button>
+			<select id="visibleAreas">
+				<option value=0>All</option>
+				<option value=1>Visible</option>
+				<option value=2>No Lines</option>
+				<option value=3>No Lines-Visible</option>
+			</select>
+			<input id="folderName" type="text" placeholder="Folder Name"/>
+			<input id="stageName" type="text" placeholder="Stage Name"/>
+			<input id="canvasWidth" type="number" placeholder="Canvas Width(px)" width="100"/>
+			You are editing in <span id="defaultLanguage"></span>
+			<div class="help-tooltip">
+				<p>If you want to edit in any other language change the default language.</p>
+			</div>
+		</div>
+	</body>
+	<dialog id="screenEditor">
+		<input id="screenId" type="hidden"/>
+		<div class="row">
+			Name: <input id="screenName" type="text"/>
+		</div>
+		<div class="row">
+			Image (default): <input id="screenImg" type="text" title="/stage/xxx/img/screens/... or http://..."
+					placeholder="/stage/xxx/img/screens/... or http://..."/>
+		</div>
+		<div class="row">
+			<button id="saveScreen" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="screenImageEditor">
+		<input id="screenImageId" type="hidden"/>
+		<div class="row">
+			Name: <input id="screenImageName" type="text"/>
+		</div>
+		<div class="row">
+			Img: <input id="screenImageImg" type="text" title="/stage/xxx/img/screens/... or http://..."
+					placeholder="/stage/xxx/img/screens/... or http://..."/>
+		</div>
+		<div class="row">
+			<button id="saveScreenImage" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="areaEditor">
+		<input id="areaId" type="hidden"/>
+		<div class="row">
+			Name: <input id="areaName" type="text"/>
+		</div>
+		<div class="row">
+			<button id="saveArea" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="stateEditor">
+		<input id="stateId" type="hidden"/>
+		<div class="row">
+			Name: <input id="stateName" type="text"/>
+		</div>
+		<div class="row">
+			<button id="saveState" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="interactionsEditor">
+		<div class="row">
+			Interactions: <select id="interactionList"></select>
+			<button id="addInteractionButton">Add</button>
+			<button id="delInteractionButton">Del</button>
+			<button id="downInteractionButton">Down</button>
+			<button id="upInteractionButton">Up</button>
+		</div>
+		<div class="row">
+			Execute only once: <input id="interactionOnlyOnce" type="checkbox"/>
+		</div>
+		<div class="row">
+			- Conditions:
+			<button id="editInteractionConditionButton">Edit</button>
+			<button id="addInteractionConditionButton">Add</button>
+			<button id="delInteractionConditionButton">Del</button>
+			<button id="downInteractionConditionButton">Down</button>
+			<button id="upInteractionConditionButton">Up</button>
+		</div>
+		<div class="row">
+			<select id="interactionConditionList" size=3></select>
+		</div>
+		<div class="row">
+			- Actions:
+			<button id="editInteractionActionButton">Edit</button>
+			<button id="addInteractionActionButton">Add</button>
+			<button id="delInteractionActionButton">Del</button>
+			<button id="downInteractionActionButton">Down</button>
+			<button id="upInteractionActionButton">Up</button>
+		</div>
+		<div class="row">
+			<select id="interactionActionList" size=3></select>
+		</div>
+		<div class="row">
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="conditionEditor">
+		<input id="conditionId" type="hidden"/>
+		<div class="row">
+			Type: <select id="conditionTypeList"></select>
+		</div>
+		<div class="row">
+			Negate: <input id="conditionNegate" type="checkbox"/>
+		</div>
+		<div class="conditionType hasObject row">
+			Object: <select id="conditionObjectList"></select>
+		</div>
+		<div class="conditionType hasObject row">
+			Num: <input type="number" min="0" step="1" id="conditionObjectNum">
+		</div>
+		<div class="conditionType objectiveCompleted row">
+			Objective: <select id="conditionObjectiveList"></select>
+		</div>
+		<div class="conditionType areaHasState row">
+			Screen: <select id="conditionScreenList"></select>
+		</div>
+		<div class="conditionType areaHasState row">
+			Area: <select id="conditionAreaList"></select>
+		</div>
+		<div class="conditionType areaHasState row">
+			State: <select id="conditionAreaStateList"></select>
+		</div>
+		<div class="row">
+			<button id="saveCondition" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="actionEditor">
+		<input id="actionId" type="hidden"/>
+		<div class="row">
+			Type: <select id="actionTypeList"></select>
+		</div>
+		<div class="actionType goTo hideArea showArea areaChangeState screenChangeImage row">
+			Screen: <select id="actionScreenList"></select>
+		</div>
+		<div class="actionType pickUpObject removeObject row">
+			Object: <select id="actionObjectList"></select>
+		</div>
+		<div class="actionType pickUpObject removeObject row">
+			Num: <input type="number" min="0" step="1" id="actionObjectNum">
+		</div>
+		<div class="actionType hideArea showArea areaChangeState row">
+			Area: <select id="actionAreaList"></select>
+		</div>
+		<div class="actionType showText row">
+			<textarea id="actionTextTextarea" class="description" placeholder="Text to show..."></textarea>
+		</div>
+		<div class="actionType completeObjective row">
+			Objective: <select id="actionObjectiveList"></select>
+		</div>
+		<div class="actionType areaChangeState row">
+			State: <select id="actionAreaStateList"></select>
+		</div>
+		<div class="actionType screenChangeImage row">
+			Images: <select id="actionScreenImageList"></select>
+		</div>
+		<div class="actionType talk row">
+			<div class="row">
+				<input id="filterTalk" placeholder="Filter talks...">
+			</div>
+			<div class="row">
+				<select id="actionTalkList" size="10"></select>
+			</div>
+		</div>
+		<div class="row">
+			<button id="saveAction" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="objectEditor">
+		<input id="objectId" type="hidden"/>
+		<div class="row">
+			Name: <input id="objectName" type="text"/>
+		</div>
+		<div class="row">
+			<button id="saveObject" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="objectiveEditor">
+		<input id="objectiveId" type="hidden"/>
+		<textarea id="objectiveName" placeholder="Objective..." class="description row"></textarea>
+		<div class="row">
+			<button id="saveObjective" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="languageEditor">
+		<select id="languageAddList"></select>
+		<div class="row">
+			<button id="addLanguage" class="defaultAction">Add</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="triggerEditor">
+		<input id="triggerId" type="hidden"/>
+		<div class="row">
+			Name: <input id="triggerName" type="text"/>
+		</div>
+		<div class="row">
+			Trigger only once: <input id="triggerOnlyOnce" type="checkbox"/>
+		</div>
+		<div class="row">
+			<button id="saveTrigger" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="characterEditor">
+		<input id="characterId" type="hidden"/>
+		<div class="row">
+			Name: <input id="characterName" type="text"/>
+		</div>
+		<div class="row">
+			<button id="saveCharacter" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="talkEditor">
+		<input id="talkId" type="hidden"/>
+		<div class="row">
+			- Options:
+			<button id="editAnswerButton">Edit</button>
+			<button id="addAnswerButton">Add</button>
+			<button id="delAnswerButton">Del</button>
+			<button id="downAnswerButton">Down</button>
+			<button id="upAnswerButton">Up</button>
+		</div>
+		<div class="row">
+			<select id="answerList" size="5"></select>
+		</div>
+		<div class="row">
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="answerEditor">
+		<input id="answerId" type="hidden"/>
+		<div class="row">
+			<textarea id="answerText" placeholder="Answer..."></textarea>
+		</div>
+		<div class="row">
+			<button id="saveAnswer" class="defaultAction">Save</button>
+		</div>
+		<div class="row">
+			- Conditions to show the answer:
+			<button id="editAnswerConditionButton">Edit</button>
+			<button id="addAnswerConditionButton">Add</button>
+			<button id="delAnswerConditionButton">Del</button>
+			<button id="downAnswerConditionButton">Down</button>
+			<button id="upAnswerConditionButton">Up</button>
+		</div>
+		<select id="answerConditionList" class="row" size=3></select>
+		<div class="row">
+			<button id="answerInteractionsButton">Interactions (<span class="interactionsNumber">0</span>)</button>
+			<div class="help-tooltip">
+				<p>Once the answer is saved you can add the conditions to show it and the interactions executed once clicked the answer.</p>
+			</div>
+		</div>
+		<div class="row">
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="getJSONModal">
+		<textarea class="row"></textarea>
+		<div class="row">
+			<button id="saveJSON" class="defaultAction">Save</button>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	<dialog id="loadJSONModal">
+		<textarea class="row"></textarea>
+		<div class="row">
+			<button id="loadJSON" class="defaultAction">Load</button>
+			<button id="loadJSONFromFile" class="defaultAction">Load From File</button>
+			<input id="importJSONFromFile" type="file" hidden>
+			<button class="closeModal">Close</button>
+		</div>
+	</dialog>
+	
+	<script type="text/javascript">
+		var stagename='<%= game %>';
+		var filename = stagename!="" ? "/stage/" + stagename + "/stage.json" : "";
+	</script>
+	<script src="/js/jquery-2.1.4.min.js"></script>
+	<script src="/js/editor.js"></script>
+	<script src="/js/constants.js"></script>
+	<script src="/js/version.js"></script>
+	<script src="/js/cursors.js"></script>
+	<script src="/js/languages.js"></script>
+	<script src="/js/util.js"></script>
+	<script src="/js/editor/screens.js"></script>
+	<script src="/js/editor/areas.js"></script>
+	<script src="/js/editor/interactionsEditor.js"></script>
+	<script src="/js/editor/actionsEditor.js"></script>
+	<script src="/js/editor/conditionsEditor.js"></script>
+	<script src="/js/editor/objects.js"></script>
+	<script src="/js/editor/objectives.js"></script>
+	<script src="/js/editor/mixtures.js"></script>
+	<script src="/js/editor/triggers.js"></script>
+	<script src="/js/editor/characters.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui/jquery-ui.js"></script>
+</html>
