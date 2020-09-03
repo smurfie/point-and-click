@@ -14,27 +14,27 @@ app.use(express.urlencoded({ extended: true, limit:'1Mb', parameterLimit:10000 }
 app.use(express.json());
 
 app.get('/', function(req, res) {
-  res.render('pages/home');
+  res.render('home');
 });
 
 app.get('/home', function(req, res) {
-  res.render('pages/home');
+  res.render('home');
 });
 
 app.get('/game/:game?', function(req, res) {
-  res.render('pages/game', {game: req.params.game || ''});
+  res.render('game', {game: req.params.game || ''});
 });
 
 app.get('/editor', function(req, res) {
-  res.render('pages/editor', {game: ''});
+  res.render('editor', {game: ''});
 });
 
 app.get('/editor/:game', function(req, res) {
-  res.render('pages/editor', {game: req.params.game});
+  res.render('editor', {game: req.params.game});
 });
 
 app.get('/canvas/:game?', function(req, res) {
-  res.render('pages/canvas', {game: req.params.game || ''});
+  res.render('canvas', {game: req.params.game || ''});
 });
 
 app.listen(PORT, () => {
