@@ -1,5 +1,5 @@
 stage = {
-	name:..,
+	stageName: textId,
 	folderName:..,
 	initialScreen:..,
 	width:..,
@@ -139,7 +139,7 @@ actions:
 savegame = {
 	inventory: [{object, num},..],
 	screens{
-		id: {area:{state:..},...},... //Objects removed/hidden
+		id: {area:{state:..},...},... //Objects removed/hidden, images changed
 	}
 	objectivesCompleted:
 }

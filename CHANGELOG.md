@@ -2,8 +2,18 @@
 
 ## TODO
 - Update Readme
+
+## Nice to have
 - Make local backups when using the editor (new restore button)
-- Add stage example
+- Savegame (see structure.json file)
+
+## 2020-09-04:
+- Add Safari stage with translations (default catalan)
+- Translation for stage name
+- Fix some translation issues
+
+## 2020-09-03:
+- Added google analytics
 
 ## 2020-09-02:
 - Cloned project from personal repo to make it public and removed all Eclipse and Google related stuff, also removed personal stages

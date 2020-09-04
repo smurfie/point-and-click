@@ -66,8 +66,14 @@ function loadLanguagesJS() {
 		var texts = "";
 		
 		for (var key in stage.texts) {
-			if (stage.texts.hasOwnProperty(key) && typeof stage.texts[key][languageId] !== undefined && stage.texts[key][languageId] !== "") {
+			if (stage.texts.hasOwnProperty(key) && typeof stage.texts[key][languageId] !== "undefined" 
+					&& stage.texts[key][languageId] !== "") {
+				// Take the current text if exists
 				texts += key + TRANSLATION_SEPARATOR + stage.texts[key][languageId] + TRANSLATION_SEPARATOR + "\n";
+			} else if (stage.texts.hasOwnProperty(key) && typeof stage.texts[key][stage.defaultLanguage] !== "undefined"
+					&& stage.texts[key][stage.defaultLanguage] !== "") {
+				// If not exists take the default one if exists
+				texts += key + TRANSLATION_SEPARATOR + stage.texts[key][stage.defaultLanguage] + TRANSLATION_SEPARATOR + "\n";
 			}
 		}
 		
@@ -131,10 +137,12 @@ function createText(text) {
 	return textId;
 }
 
-// Returns the text asociated to the id passed as parameter. If not language is defined then the default is taken
+// Returns the text asociated to the id passed as parameter.
+// If no language is defined then the default is taken.
+// If the text is empty then take the defaultLanguage text
 function getText(id, language) {
 	language = typeof language === "undefined" ? defaultLanguage : language;
-	return stage.texts[id][language];
+	return typeof stage.texts[id][language] === "undefined" ? stage.texts[id][stage.defaultLanguage] : stage.texts[id][language];
 }
 
 function setText(text, id, language) {
@@ -148,7 +156,7 @@ function delText(id) {
 
 function delLanguage(languageId) {
 	for (var key in stage.texts) {
-		if (stage.texts.hasOwnProperty(key) && typeof stage.texts[key][languageId] !== undefined) {
+		if (stage.texts.hasOwnProperty(key) && typeof stage.texts[key][languageId] !== "undefined") {
 			delete stage.texts[key][languageId];
 		}
 	}

@@ -53,7 +53,8 @@ $(document).ready(function() {
 	
 	$("#okOption").click(function() {
 		defaultLanguage = $("#languageOptions a.active").data("lang");
-		
+		updateStageName();
+
 		// Reload the screen and inventory to let changes take effect
 		drawInventory();
 		loadScreen(currentScreenId);
@@ -132,14 +133,17 @@ function init() {
 		drawOptions = true;
 	}
 
-	// Update the stage name (iframe title , parent title and #gameTitle)
-	document.title = stage.name;
-	parent.document.title = stage.name;
-	$("#gameTitle", window.parent.document).html(stage.name);
-	
+	updateStageName()
 	scaleCanvas();
 	drawInventory();
 	loadStage();
+}
+
+// Update the stage name (iframe title , parent title and #gameTitle)
+function updateStageName() {
+	document.title = getText(stage.stageName);
+	parent.document.title = getText(stage.stageName);
+	$("#gameTitle", window.parent.document).html(getText(stage.stageName));
 }
 
 function scaleCanvas() {

@@ -86,8 +86,15 @@ $(document).ready(function(){
 	});
 
 	$("#stageName").change(function(){
-		stage.name = $("#stageName").val();
-		document.title = "Point and Click - Editor" + (stage.name.length > 0 ? " (" + stage.name + ")" : "");
+		// If the text is already created update it, if not create it
+		if (stage.stageName) {
+			setText($("#stageName").val(), stage.stageName);
+		} else {
+			stage.stageName = createText($("#stageName").val());
+		}
+
+		document.title = "Point and Click - Editor" + (getText(stage.stageName).length > 0 ? 
+				" (" + getText(stage.stageName) + ")" : "");
 	});
 	
 	$("#canvasWidth").change(function(){
@@ -135,14 +142,16 @@ function init(refresh) {
 				"en_US": "English"
 			}
 		}
+		stage.stageName = createText(stagename);
 	}
 	
-	updateToLastVersion();
 	
 	//Default language is loaded at beginning and not changed until reloading/reseting
 	defaultLanguage = stage.defaultLanguage;
 	$("#defaultLanguage").text(stage.languages[defaultLanguage]);
 	
+	updateToLastVersion();
+
 	scaleCanvas();
 	
 	//Load the other Javascript functions the first time the page is started
@@ -163,7 +172,7 @@ function init(refresh) {
 	//Load all the things that only need to be loaded once
 	$("#folderName").val(stage.folderName);
 	$("#folderName").change();
-	$("#stageName").val(stage.name);
+	$("#stageName").val(getText(stage.stageName));
 	$("#stageName").change();
 	$("#canvasWidth").val(stage.width ? stage.width : 960);
 	$("#canvasWidth").change();

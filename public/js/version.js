@@ -33,6 +33,10 @@ function updateToLastVersion() {
 		case 20160817:
 			console.log("Updating from 20160817 to 20200902...");
 			versionError = !updateFrom20160817To20200902();
+			break;
+		case 20200902:
+			console.log("Updating from 20200902 to 20200904...");
+			versionError = !updateFrom20200902To20200904();
 			break;	
 		default:
 			console.log("Error: Version not Found.");
@@ -284,5 +288,13 @@ function updateFrom20160810To20160817() {
 function updateFrom20160817To20200902() {
 	stage.name = stage.folderName
 	stage.version = 20200902;
+	return true;
+}
+
+// Add translation to stage name
+function updateFrom20200902To20200904() {
+	stage.stageName = createText(stage.name);
+	delete stage.name;
+	stage.version = 20200904;
 	return true;
 }

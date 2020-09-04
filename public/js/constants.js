@@ -1,4 +1,4 @@
-var VERSION = 20200902;
+var VERSION = 20200904;
 
 var ACTIONS = {
 	GO_TO: 1,

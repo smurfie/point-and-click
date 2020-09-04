@@ -48,7 +48,6 @@ ul#navList li {
 	width: 12%;
 	padding: 5px;
 	text-align: center;
-	display: inline-block;
 }
 
 ul#navList li.active {
