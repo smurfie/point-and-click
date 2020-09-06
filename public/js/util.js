@@ -62,3 +62,7 @@ function getAreaStateProperty(areaId, stateId, property) {
 function isAbsolutePath(url) {
 	return url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:image/");
 }
+
+function unescapeNewLinesHTML(text) {
+	return text.replace(/\n/g, '<br>');
+}

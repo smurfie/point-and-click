@@ -154,7 +154,7 @@ function executeActionTalk(action) {
 		if (fulfillConditions(answer.conditions)) {
 			if (ul.children().size() === 0) {
 				p.html((talk.characterId === stage.mainCharacter ? "" : "<strong>\"" + getText(character.name) + "\": </strong>") + 
-						getText(answer.text) + "</p>");
+				unescapeNewLinesHTML(getText(answer.text)) + "</p>");
 				next.click(executeInteractionsCallback(answer.interactions));
 			} else {
 				p.html("");

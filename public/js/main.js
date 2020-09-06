@@ -75,7 +75,7 @@ $(document).ready(function() {
 	
 	// On hover an answer show in the upper box
 	$("#conversationOptions").on("mouseenter", "li", function(){
-		$("#conversationText > p").text($(this).text());
+		$("#conversationText > p").html(unescapeNewLinesHTML($(this).text()));
 	});
 	
 	$("#conversationOptions").on("mouseleave", "li", function(){
@@ -266,7 +266,8 @@ function findAndExecuteActions(interactions) {
 	var i;
 	for (i=0; i<interactions.length && !fulfillConditions(interactions[i].conditions); i++);
 	
-	if (i < interactions.length) {
+	var interactionFound = i < interactions.length;
+	if (interactionFound) {
 		// If there is an object selected (user is using one object with another), we always unselect it
 		// except when there is only one action and it's showing a text (normally is the case when the action that the user
 		// intended to do failed and a text is shown).
@@ -275,13 +276,14 @@ function findAndExecuteActions(interactions) {
 		}
 		executeActions(interactions[i].actions);
 		
-		// If the interaction is flag to be executed only once, remove it.
+		// If the interaction is marked to be executed only once, remove it.
 		if (interactions[i].onlyOnce) {
 			interactions.splice(i--, 1);
 		}
 		
 		findAndExecuteTriggers();
 	}
+	return interactionFound;
 }
 
 function findAndExecuteTriggers() {
@@ -355,33 +357,31 @@ function unselectObject() {
 }
 
 function useObjectObject(objectId1, objectId2) {
-	var result = getText(stage.mixtures.description);
 	var mixture = stage.mixtures[objectId1] && stage.mixtures[objectId1][objectId2] ? stage.mixtures[objectId1][objectId2] :
 			stage.mixtures[objectId2] && stage.mixtures[objectId2][objectId1] ? stage.mixtures[objectId2][objectId1] : null;
-	if (!mixture) {
-		if (stage.mixtures[objectId1] && getText(stage.mixtures[objectId1].description)) {
-			result = getText(stage.mixtures[objectId1].description);
-		}
-		$("#modalText p").html(result);
-		$("#modalText")[0].showModal();
-	} else {
-		findAndExecuteActions(mixture.interactions);
-	}
+	
+	useMixture(mixture, objectId1);
 }
 
 function useObjectArea(objectId, areaId) {
 	var screenArea = currentScreenId + "_" + areaId;
-	var result = getText(stage.mixtures.description);
 	var mixture = stage.mixtures[objectId] && stage.mixtures[objectId][screenArea] ? stage.mixtures[objectId][screenArea] : null;
-	if (!mixture) {
-		if (stage.mixtures[objectId] && getText(stage.mixtures[objectId].description)) {
+
+	useMixture(mixture, objectId);
+}
+
+function useMixture(mixture, objectId) {
+	var result = getText(stage.mixtures.description);
+
+	// If no mixture found or found one with no interactions possible to execute show default text
+	if (!mixture || !findAndExecuteActions(mixture.interactions)) {
+		if (stage.mixtures[objectId] && stage.mixtures[objectId].description) {
 			result = getText(stage.mixtures[objectId].description);
 		}
-		$("#modalText p").html(result);
+
+		$("#modalText p").html(unescapeNewLinesHTML(result));
 		$("#modalText")[0].showModal();
-	} else {
-		findAndExecuteActions(mixture.interactions);
-	}	
+	}
 }
 
 function drawOptionsMenu() {
@@ -408,7 +408,7 @@ function showText(text) {
 
 function showNextText() {
 	var text = textMessages.shift();
-	$("#modalText p").html(text.replace(/\n/g, '<br>'));
+	$("#modalText p").html(unescapeNewLinesHTML(text));
 	$("#modalText")[0].showModal();
 	
 	// Remove bottom text

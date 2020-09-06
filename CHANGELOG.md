@@ -7,6 +7,11 @@
 - Make local backups when using the editor (new restore button)
 - Savegame (see structure.json file)
 
+## 2020-09-06:
+- Fix Safari stage bug
+- Convert new lines in conversation box correctly (leave it without new lines in conversation options)
+- Fix default action when no interaction can be selected
+
 ## 2020-09-04:
 - Add Safari stage with translations (default catalan)
 - Translation for stage name
