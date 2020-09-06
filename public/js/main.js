@@ -41,11 +41,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	$("#inventory").on("click", ".optionsMenu", function() {
-		drawOptionsMenu();
-		$("#options").show();
-	});
-	
 	$("#languageOptions").on("click", "a" ,function() {
 		$("#languageOptions a").removeClass("active");
 		$(this).addClass("active");
@@ -111,7 +106,6 @@ var currentScreen, currentScreenId, currentArea, currentObject;
 var numImages = 0, loadedImages = 0;
 var textMessages = [];
 var defaultLanguage;
-var drawOptions = false;
 
 function init() {
 	updateToLastVersion();
@@ -128,15 +122,16 @@ function init() {
 	stageAreaPath = stageImagePath + "areas/";
 	stageCharacterPath = stageImagePath + "characters/";
 	
-	// If more than one language, draw the options menu
-	if (Object.keys(stage.languages).length > 1) {
-		drawOptions = true;
-	}
-
 	updateStageName()
 	scaleCanvas();
 	drawInventory();
 	loadStage();
+
+	// If more than one language, draw the options menu
+	if (Object.keys(stage.languages).length > 1) {
+		drawOptionsMenu();
+		$("#options").show();
+	}
 }
 
 // Update the stage name (iframe title , parent title and #gameTitle)
@@ -303,10 +298,6 @@ function findAndExecuteTriggers() {
 function drawInventory() {
 	$("#inventory").empty();
 	
-	if (drawOptions) {
-		$("#inventory").append("<div class='inventorySlot optionsMenu'></div>");
-	}
-	
 	var i=0;
 	for (; i<inventory.length; i++) {
 		var inventorySlot = $("<div class='inventorySlot'></div>");
@@ -333,7 +324,7 @@ function drawInventory() {
 	}
 	
 	// Fill with empty spaces until all the screen is filled (horizontaly and vertically)
-	for (i = drawOptions ? i+1 : i; i<12 || i%2 == 1; i++) {
+	for (; i<12 || i%2 == 1; i++) {
 		var inventorySlot = $("<div class='inventorySlot'></div>");
 		$("#inventory").append(inventorySlot);
 	}

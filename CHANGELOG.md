@@ -11,6 +11,7 @@
 - Fix Safari stage bug
 - Convert new lines in conversation box correctly (leave it without new lines in conversation options)
 - Fix default action when no interaction can be selected
+- Select language at start and remove options menu
 
 ## 2020-09-04:
 - Add Safari stage with translations (default catalan)
