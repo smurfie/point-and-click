@@ -1,7 +1,7 @@
 # Changelog
 
 ## TODO
-- Update Readme
+- Update Manual
 
 ## Nice to have
 - Make local backups when using the editor (new restore button)
@@ -12,6 +12,7 @@
 - Convert new lines in conversation box correctly (leave it without new lines in conversation options)
 - Fix default action when no interaction can be selected
 - Select language at start and remove options menu
+- Update Readme
 
 ## 2020-09-04:
 - Add Safari stage with translations (default catalan)
