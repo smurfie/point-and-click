@@ -1,11 +1,11 @@
 # Point and click game editor and engine
-- [Description](##description)
-- [Browser Compatibility](##browser-compatibility)
-- [Background](##background)
-- [Future work](##future-work)
-- [Try it!](##try-it-)
+- [Description](#description)
+- [Browser Compatibility](#browser-compatibility)
+- [Background](#background)
+- [Future work](#future-work)
+- [Try it!](#try-it)
 - [Documentation](#documentation)
-- [Example game (Safari)](##example-game--safari-)
+- [Example game (Safari)](#example-game-safari)
 
 ## Description
 `point-and-click` is a personal project to make and to play Point and click (or Graphical Adventure or Room Escape) games without programming them. It contains a game editor and an engine for web browsers. It is make with jQuery and plain Javascript and CSS (also express is used to make it runnable from a server).
@@ -27,3 +27,4 @@ You can see a live example at this [Live Server](https://point-and-click.herokua
 Visit the [manual](docs/manual.md) if you want more information on how to create your own game.
 
 ## Example game (Safari)
+In the [Live Server](https://point-and-click.herokuapp.com/) you can play and edit a personal game (Safari) adapted for being and example of the potential of the engine and the editor. It's rated for adult audiences due to drugs use and its obscene and violent language :wink:. It was developed with my native language (Catalan) and then I translated it with Google Translate and reviewed it a little. Expect lots of errors in the translations! (Any corrections are welcome)

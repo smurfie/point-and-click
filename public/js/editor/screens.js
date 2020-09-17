@@ -84,12 +84,7 @@ function loadScreensJS() {
 			screen.areas = {
 				onLoad: {
 					"name": "onLoad",
-					"hidden": true,
 					"interactions": [],
-					"states": {
-						"default": {
-						}
-					}
 				}
 			};
 			if (!stage.initialScreen) {

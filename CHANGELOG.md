@@ -7,6 +7,9 @@
 - Make local backups when using the editor (new restore button)
 - Savegame (see structure.json file)
 
+## 2020-09-17:
+- Removed properties from onLoad area not used
+
 ## 2020-09-06:
 - Fix Safari stage bug
 - Convert new lines in conversation box correctly (leave it without new lines in conversation options)

@@ -40,7 +40,7 @@ function loadClickablesJS() {
 			});
 			
 			//Load States
-			loadStates($("#stateList"), currentArea.states);
+			loadStates($("#stateList"), isOnLoad ? [] : currentArea.states);
 			
 			//Interactions
 			$("#areaInteractionsButton .interactionsNumber").text(currentArea.interactions.length);
@@ -51,7 +51,7 @@ function loadClickablesJS() {
 		//If is the onLoad area, disable the elements
 		var isOnLoad = $("#areaList").val() === "onLoad";
 		
-		currentState = currentArea.states[$("#stateList").val()];
+		currentState = isOnLoad ? null : currentArea.states[$("#stateList").val()];
 		currentStateId = $("#stateList").val();
 		$("#editStateButton, #delStateButton").prop("disabled", currentStateId === "default" || isOnLoad);
 		$("#stateList, #addStateButton").prop("disabled", isOnLoad);
@@ -67,7 +67,10 @@ function loadClickablesJS() {
 		$("#areaA").val(getAreaStateProperty(currentAreaId, currentStateId, "alpha"));
 		$("#areaCursor").val(getAreaStateProperty(currentAreaId, currentStateId, "cursor"));
 		$("#areaHidden").prop("checked", getAreaStateProperty(currentAreaId, currentStateId, "hidden"));
-		$("#areaImg").change();
+
+		if (!isOnLoad) {
+			$("#areaImg").change();
+		}
 	});
 	
 	$("#areaInteractionsButton").click(function() {
@@ -79,7 +82,7 @@ function loadClickablesJS() {
 	
 	$(".updateArea").change(function(){
 		var currentAreaId = $("#areaList").val();
-		if (!currentAreaId) {
+		if (!currentAreaId || currentAreaId === "onLoad") {
 			return;
 		}
 		

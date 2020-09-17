@@ -37,7 +37,11 @@ function updateToLastVersion() {
 		case 20200902:
 			console.log("Updating from 20200902 to 20200904...");
 			versionError = !updateFrom20200902To20200904();
-			break;	
+			break;
+		case 20200904:
+			console.log("Updating from 20200904 to 20200917...");
+			versionError = !updateFrom20200904To20200917();
+			break;
 		default:
 			console.log("Error: Version not Found.");
 			versionError = true;
@@ -296,5 +300,20 @@ function updateFrom20200902To20200904() {
 	stage.stageName = createText(stage.name);
 	delete stage.name;
 	stage.version = 20200904;
+	return true;
+}
+
+// Remove all properties of onLoad areas except name and interactioms
+function updateFrom20200904To20200917() {
+	for (var screen in stage.screens) {
+		if (stage.screens.hasOwnProperty(screen)) {
+			var onLoad = stage.screens[screen].areas["onLoad"];
+			delText(onLoad.states["default"].description)
+			delete onLoad["states"];
+			delete onLoad["hidden"];
+		}
+	}
+	
+	stage.version = 20200917;
 	return true;
 }
