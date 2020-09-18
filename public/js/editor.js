@@ -145,12 +145,11 @@ function init(refresh) {
 		stage.stageName = createText(stagename);
 	}
 	
-	
+	updateToLastVersion();
+
 	//Default language is loaded at beginning and not changed until reloading/reseting
 	defaultLanguage = stage.defaultLanguage;
 	$("#defaultLanguage").text(stage.languages[defaultLanguage]);
-	
-	updateToLastVersion();
 
 	scaleCanvas();
 	
