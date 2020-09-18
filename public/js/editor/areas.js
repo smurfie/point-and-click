@@ -92,11 +92,20 @@ function loadClickablesJS() {
 		img.remove();
 		state.img = $("#areaImg").val();
 		
-		// If the text is already created update it, if not create it
-		if (state.description) {
-			setText($("#areaDescription").val(), state.description);
+		var description = $("#areaDescription").val();
+
+		if (description === "") {
+			if (state.description) {
+				delText(state.description);
+				delete state.description;
+			}
 		} else {
-			state.description = createText($("#areaDescription").val());
+			// If the text is already created update it, if not create it
+			if (state.description) {
+				setText(description, state.description);
+			} else {
+				state.description = createText(description);
+			}
 		}
 		state.top = parseInt($("#areaY").val());
 		state.left = parseInt($("#areaX").val());

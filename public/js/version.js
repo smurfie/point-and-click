@@ -42,6 +42,10 @@ function updateToLastVersion() {
 			console.log("Updating from 20200904 to 20200917...");
 			versionError = !updateFrom20200904To20200917();
 			break;
+		case 20200917:
+			console.log("Updating from 20200917 to 20200918...");
+			versionError = !updateFrom20200917To20200918();
+			break;
 		default:
 			console.log("Error: Version not Found.");
 			versionError = true;
@@ -315,5 +319,29 @@ function updateFrom20200904To20200917() {
 	}
 	
 	stage.version = 20200917;
+	return true;
+}
+
+// Remove all description of areas that are empty
+function updateFrom20200917To20200918() {
+	for (var screen in stage.screens) {
+		if (stage.screens.hasOwnProperty(screen)) {
+			for (var area in stage.screens[screen].areas) {
+				if (stage.screens[screen].areas.hasOwnProperty(area)) {
+					for (var state in stage.screens[screen].areas[area].states) {
+						if (stage.screens[screen].areas[area].states.hasOwnProperty(state)) {
+							var stateObj = stage.screens[screen].areas[area].states[state];
+							if (stateObj.description && getText(stateObj.description, stage.defaultLanguage) === "") {
+								delText(stateObj.description);
+								delete stateObj.description;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	stage.version = 20200918;
 	return true;
 }

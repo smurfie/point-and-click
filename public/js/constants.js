@@ -1,4 +1,4 @@
-var VERSION = 20200917;
+var VERSION = 20200918;
 
 var ACTIONS = {
 	GO_TO: 1,
@@ -32,3 +32,4 @@ var CURSORS = {
 };
 
 var TRANSLATION_SEPARATOR = "|||";
+var TO_BE_TRANSLATED = "TBT-";

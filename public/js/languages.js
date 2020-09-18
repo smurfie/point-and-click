@@ -70,10 +70,10 @@ function loadLanguagesJS() {
 					&& stage.texts[key][languageId] !== "") {
 				// Take the current text if exists
 				texts += key + TRANSLATION_SEPARATOR + stage.texts[key][languageId] + TRANSLATION_SEPARATOR + "\n";
-			} else if (stage.texts.hasOwnProperty(key) && typeof stage.texts[key][stage.defaultLanguage] !== "undefined"
-					&& stage.texts[key][stage.defaultLanguage] !== "") {
-				// If not exists take the default one if exists
-				texts += key + TRANSLATION_SEPARATOR + stage.texts[key][stage.defaultLanguage] + TRANSLATION_SEPARATOR + "\n";
+			} else if (stage.texts.hasOwnProperty(key)) {
+				// If not exists take the default one and mark it to be translated
+				texts += key + TRANSLATION_SEPARATOR + TO_BE_TRANSLATED + 
+						stage.texts[key][stage.defaultLanguage] + TRANSLATION_SEPARATOR + "\n";
 			}
 		}
 		
