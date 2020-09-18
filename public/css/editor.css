@@ -26,7 +26,8 @@ html {
 }
 
 #defaultLanguage {
-	color: red;
+	height: 25px;
+    vertical-align: bottom;
 }
 
 #rightMenu {
@@ -198,9 +199,8 @@ dialog::backdrop {
 /* Help Tooltip */
 .help-tooltip {
 	display: inline-block;
+	position: relative;
 	margin: 0 5px;
-	top: 18px;
-	right: 18px;
 	text-align: center;
 	background-color: #BCDBEA;
 	border-radius: 50%;
@@ -222,8 +222,13 @@ dialog::backdrop {
 	animation: fadeIn 0.3s ease-in-out;
 }
 
+.help-tooltip.help-tooltip-up:hover p {
+	bottom: 20px;
+}
+
 .help-tooltip p {
 	display: none;
+	box-sizing: border-box;
 	text-align: left;
 	background-color: #1E2021;
 	padding: 20px;
@@ -243,4 +248,11 @@ dialog::backdrop {
 	border-bottom-color: #1E2021;
 	right: 10px;
 	top: -12px;
+}
+
+.help-tooltip.help-tooltip-up p:before {
+	border-bottom-color: transparent;
+	border-top-color: #1E2021;
+    bottom: -12px;
+	top: inherit;
 }

@@ -273,21 +273,32 @@
 			</div>
 		</div>
 		<div id="downMenu">
-			<button id="tryItButton">Try it!</button>
-			<button id="getJSONButton">Get json</button>
-			<button id="loadJSONButton">Load json</button>
+			<input id="folderName" type="text" placeholder="Folder Name"/>
+			<input id="stageName" type="text" placeholder="Stage Name"/>
+			<input id="canvasWidth" type="number" placeholder="Canvas Width(px)" width="100"/>
+			<img src="../img/flags/en_US.png" id="defaultLanguage"/>
+			<div class="help-tooltip help-tooltip-up">
+				<p>If you want to edit in any other language change the default language.</p>
+			</div>
+			<span>Areas to show:</span>
 			<select id="visibleAreas">
 				<option value=0>All</option>
 				<option value=1>Visible</option>
 				<option value=2>No Lines</option>
 				<option value=3>No Lines-Visible</option>
 			</select>
-			<input id="folderName" type="text" placeholder="Folder Name"/>
-			<input id="stageName" type="text" placeholder="Stage Name"/>
-			<input id="canvasWidth" type="number" placeholder="Canvas Width(px)" width="100"/>
-			You are editing in <span id="defaultLanguage"></span>
-			<div class="help-tooltip">
-				<p>If you want to edit in any other language change the default language.</p>
+			<br/>
+			<br/>
+			<button id="tryItButton">Try it!</button>
+			<button id="getJSONButton">Get json</button>
+			<button id="loadJSONButton">Load json</button>
+			<button id="restoreJSONButton">Restore json</button>
+			<div class="help-tooltip help-tooltip-up">
+				<p>An automatic backup of your project is being made each minute if your folder name
+					is not empty. You can restore this backup anytime filling your folder name and pressing
+					this button. This is useful in case that you close the window accidentally. If the button
+					appears disabled there is no backup for this folder name.
+				</p>
 			</div>
 		</div>
 	</body>

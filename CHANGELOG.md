@@ -4,16 +4,17 @@
 - Update Manual
 
 ## Nice to have
-- Make local backups when using the editor (new restore button)
 - Savegame (see structure.json file)
-
-## 2020-09-19:
-- Removed empty descriptions from state areas
-- Added a To Be Translated (TBT-) text to texts not yet translated when exporting
 
 ## 2020-09-18:
 - Added gitignore for personal projects
 - Moved updating version before language because old versions don't have language
+- Removed empty descriptions from state areas
+- Added a To Be Translated (TBT-) text to texts not yet translated when exporting
+- Fixed some tooltip issues
+- Added tooltip-up
+- Redesign down-menu
+- Make local backups when using the editor (new restore button)
 
 ## 2020-09-17:
 - Removed properties from onLoad area not used

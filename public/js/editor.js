@@ -50,6 +50,20 @@ $(document).ready(function(){
 		$("#loadJSONModal textarea").val("");
 		$("#loadJSONModal")[0].showModal();
 	});
+
+	// Save json each minute in localStorage if folderName is not empty
+	setInterval(function(){
+		if (stage.folderName !== "") {
+			localStorage.setItem(stage.folderName + "_stage", JSON.stringify(stage));
+		}
+	}, 60000);
+
+	$("#restoreJSONButton").click(function(){
+		if (localStorage.getItem(stage.folderName + "_stage")) {
+			stage = JSON.parse(localStorage.getItem(stage.folderName + "_stage"));
+			init();
+		}
+	});
 	
 	$("#loadJSON").click(function(){
 		stage = JSON.parse($("#loadJSONModal textarea").val());
@@ -82,6 +96,8 @@ $(document).ready(function(){
 	
 	$("#folderName").change(function(){
 		stage.folderName = $("#folderName").val();
+		$("#restoreJSONButton").prop("disabled",
+				stage.folderName === "" || !localStorage.getItem(stage.folderName + "_stage"));
 		setPaths();
 	});
 
@@ -149,7 +165,7 @@ function init(refresh) {
 
 	//Default language is loaded at beginning and not changed until reloading/reseting
 	defaultLanguage = stage.defaultLanguage;
-	$("#defaultLanguage").text(stage.languages[defaultLanguage]);
+	$("#defaultLanguage").attr("src", "../img/flags/" + defaultLanguage + ".png");
 
 	scaleCanvas();
 	
