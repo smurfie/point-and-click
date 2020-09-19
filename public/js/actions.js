@@ -44,8 +44,6 @@ function executeAction(action) {
 		case ACTIONS.TALK:
 			executeActionTalk(action);
 			break;
-		/*case ACTIONS.END:
-			return "End";*/
 	}
 }
 

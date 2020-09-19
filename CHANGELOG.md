@@ -6,6 +6,10 @@
 ## Nice to have
 - Savegame (see structure.json file)
 
+## 2020-09-19:
+- Removed Action End
+- Renamed structure.json to .js and improved their content
+
 ## 2020-09-18:
 - Added gitignore for personal projects
 - Moved updating version before language because old versions don't have language
