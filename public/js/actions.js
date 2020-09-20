@@ -118,14 +118,14 @@ function executeActionAreaCompleteObjective(action) {
 function executeActionAreaChangeState(action) {
 	stage.screens[action.screen].areas[action.area].currentState = action.state;
 	$("#object_" + action.area).remove();
-	if (action.screen === currentScreenId) {
+	if (action.screen === savegame.screenId) {
 		loadArea(action.area);
 	}
 }
 
 function executeActionScreenChangeImage(action) {
 	stage.screens[action.screen].currentImage = action.image;
-	if (action.screen === currentScreenId) {
+	if (action.screen === savegame.screenId) {
 		// Reload only the screen image (not all areas)
 		var screenPath = currentScreen.images[currentScreen.currentImage].img;
 		screenPath = isAbsolutePath(screenPath) ? screenPath : stageScreenPath + screenPath;

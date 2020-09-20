@@ -30,7 +30,7 @@ function loadActionsEditorJS() {
 		loadActions($("#interactionActionList"), currentInteraction.actions, i-1);
 	});
 	
-	//Modal Actions
+	// Modal Actions
 	$("#actionTypeList").change(function() {
 		$(".actionType").hide();
 		$("." + actionClass($(this).val())).show();
@@ -42,7 +42,7 @@ function loadActionsEditorJS() {
 		saveAction();
 	});
 	
-	//Lists
+	// Lists
 	$("#interactionActionList").change(function() {
 		var hasValue = $(this).val() !== null;
 		$("#editInteractionActionButton").prop("disabled", !hasValue);
@@ -57,12 +57,12 @@ function loadActionsEditorJS() {
 		$("#delActionMixtureButton").prop("disabled", !hasValue);
 	});
 	
-	//Modal Lists
+	// Modal Lists
 	$("#actionScreenList").change(function() {
 		if (!$(this).val()) {
 			return;
 		}
-		//If in edit mode, select the value passed. Otherwise, if the screen==currentScreen select the currentArea, otherwise null.
+		// If in edit mode, select the value passed. Otherwise, if the screen==currentScreen select the currentArea, otherwise null.
 		loadAreas($("#actionAreaList"), stage.screens[$(this).val()].areas, $("#saveAction").closest("dialog").hasClass("loadData") ?
 				currentActionList[parseInt($("#actionId").val())].area : 
 				$(this).val()==currentScreenId ? currentAreaId : null, true);
@@ -219,7 +219,7 @@ function actionDescription(action) {
 	return "NO_DESCRIPTION";
 }
 
-//Load (if dialog hasClass loadData, load the current action and remove the class)
+// Load (if dialog hasClass loadData, load the current action and remove the class)
 function loadActionsMenu(actionTypeId) {
 	if (typeof actionTypeId !== "number") {
 		actionTypeId = parseInt(actionTypeId);
@@ -273,7 +273,7 @@ function loadActionPickUpObject() {
 	$("#actionObjectNum").val($("#saveAction").closest("dialog").hasClass("loadData") ?
 			currentActionList[parseInt($("#actionId").val())].num : 1);
 	
-	//If there is no objects disable the save button
+	// If there is no objects disable the save button
 	$("#saveAction").prop("disabled", $("#actionObjectList").val() === null);
 }
 
@@ -293,7 +293,7 @@ function loadActionScreens() {
 	loadScreens($("#actionScreenList"), $("#saveAction").closest("dialog").hasClass("loadData") ?
 			currentActionList[parseInt($("#actionId").val())].screen : currentScreenId);
 	
-	//If there is no area (because screen always exists at least one) disable the save button
+	// If there is no area (because screen always exists at least one) disable the save button
 	$("#saveAction").prop("disabled", $("#actionAreaList").val() === null);
 }
 
@@ -306,7 +306,7 @@ function loadActionCompleteObjective() {
 	loadObjectives($("#actionObjectiveList"), $("#saveAction").closest("dialog").hasClass("loadData") ?
 			currentActionList[parseInt($("#actionId").val())].objective : "last");
 	
-	//If there is no objectives disable the save button
+	// If there is no objectives disable the save button
 	$("#saveAction").prop("disabled", $("#actionObjectiveList").val() === null);
 }
 
@@ -324,13 +324,13 @@ function loadActionTalk() {
 	$("#saveAction").prop("disabled", $("#actionTalkList").val() === null);
 }
 
-//Save
+// Save
 function saveAction() {
 	actionTypeId = parseInt($("#actionTypeList").val());
 	
 	if ($("#saveAction").closest("dialog").hasClass("add")) {
 		if (!currentActionList) {
-			//We are creating an action for a mixture:
+			// We are creating an action for a mixture:
 			var obj1 = $("#mixture1List").val();
 			var obj2 = $("#mixture2List").val();
 			if (!stage.mixtures[obj1]) {
@@ -350,7 +350,7 @@ function saveAction() {
 		var option = $("<option value='" + $("#actionId").val() + "'>" + "</option>");
 		currentActionListDOM.append(option);
 	} else {
-		//Clear the object (To avoid having unused variables in case of a typeId change for example)
+		// Clear the object (To avoid having unused variables in case of a typeId change for example)
 		if (currentActionList[$("#actionId").val()].text) {
 			delText(currentActionList[$("#actionId").val()].text);
 		}

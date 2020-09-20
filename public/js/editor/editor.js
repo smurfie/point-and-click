@@ -138,7 +138,6 @@ var currentScreen, currentArea, currentState, currentInteraction, currentConditi
 	currentActionList, currentActionListDOM, currentObject, currentTrigger, currentTriggerId, currentCharacter,
 	currentCharacterId, currentTalk, currentTalkId, currentAnswer;
 var currentScreenId, currentAreaId, currentStateId, currentInteractionsNumberDOM, currentInteractionList;
-var defaultLanguage;
 
 //If refresh then the events won't be loaded again
 function init(refresh) {
@@ -163,13 +162,11 @@ function init(refresh) {
 	
 	updateToLastVersion();
 
-	//Default language is loaded at beginning and not changed until reloading/reseting
-	defaultLanguage = stage.defaultLanguage;
-	$("#defaultLanguage").attr("src", "../img/flags/" + defaultLanguage + ".png");
+	$("#defaultLanguage").attr("src", "../img/flags/" + stage.defaultLanguage + ".png");
 
 	scaleCanvas();
 	
-	//Load the other Javascript functions the first time the page is started
+	// Load the other Javascript functions the first time the page is started
 	if (!refresh) {
 		loadScreensJS();
 		loadClickablesJS();
@@ -197,7 +194,7 @@ function init(refresh) {
 	loadObjectives($("#objectiveList"));
 	loadMixtures();
 	loadCharacters($("#characterList"));
-	loadLanguages($("#languageList"), defaultLanguage);
+	loadLanguages($("#languageList"), stage.defaultLanguage);
 	loadConditionTypes();
 	loadActionTypes();
 }

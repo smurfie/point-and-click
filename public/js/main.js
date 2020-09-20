@@ -1,10 +1,10 @@
 "use strict";
 
 $(document).ready(function() {
-	// Dialog polyfill
+
+	// Dialog polyfill: dialog acts like a native <dialog> in all browsers
 	var dialog = document.querySelector('dialog');
 	dialogPolyfill.registerDialog(dialog);
-	// Now dialog acts like a native <dialog>.
 	
 	$("#modalText").click(function() {
 		if ($("#modalText:visible").length > 0) {
@@ -47,12 +47,12 @@ $(document).ready(function() {
 	});
 	
 	$("#okOption").click(function() {
-		defaultLanguage = $("#languageOptions a.active").data("lang");
+		savegame.language = $("#languageOptions a.active").data("lang");
 		updateStageName();
 
 		// Reload the screen and inventory to let changes take effect
 		drawInventory();
-		loadScreen(currentScreenId);
+		loadScreen(savegame.screenId);
 		
 		$("#options").hide();
 	});
@@ -98,19 +98,19 @@ $(document).ready(function() {
 });
 
 var stage = {};
+var savegame = {};
 var imagePath, cursorPath;
 var stagePath, stageImagePath, stageScreenPath, stageObjectPath, stageAreaPath, stageCharacterPath;
 var inventory = [];
 var objectivesCompleted = {};
-var currentScreen, currentScreenId, currentArea, currentObject;
+var currentScreen, currentArea, currentObject;
 var numImages = 0, loadedImages = 0;
 var textMessages = [];
-var defaultLanguage;
 
 function init() {
 	updateToLastVersion();
 	
-	defaultLanguage = stage.defaultLanguage;
+	savegame.language = stage.defaultLanguage;
 	
 	imagePath = "/img/";
 	cursorPath = imagePath + "cursor/";
@@ -160,12 +160,13 @@ function loadStage() {
 function loadScreen(screenId) {
 	$("#loadingCanvas").css("background-image", "url('" + imagePath + "loading.gif')");
 	$("#loadingCanvas").show();
-	currentScreenId = screenId;
+	savegame.screenId = screenId;
 	currentScreen = stage.screens[screenId];
 	
 	$("#canvas").empty();
 	// If the currentImage for that screen is empty select the defaultImage
 	currentScreen.currentImage = currentScreen.currentImage || currentScreen.defaultImage;
+	
 	// Choose between absolute or relative image
 	var screenPath = currentScreen.images[currentScreen.currentImage].img;
 	screenPath = isAbsolutePath(screenPath) ? screenPath : stageScreenPath + screenPath;
@@ -355,7 +356,7 @@ function useObjectObject(objectId1, objectId2) {
 }
 
 function useObjectArea(objectId, areaId) {
-	var screenArea = currentScreenId + "_" + areaId;
+	var screenArea = savegame.screenId + "_" + areaId;
 	var mixture = stage.mixtures[objectId] && stage.mixtures[objectId][screenArea] ? stage.mixtures[objectId][screenArea] : null;
 
 	useMixture(mixture, objectId);
@@ -381,7 +382,7 @@ function drawOptionsMenu() {
 	for (var key in stage.languages) {
 		if (stage.languages.hasOwnProperty(key)) {
 			var button = $("<a data-lang='" + key + "'><img src='../img/flags/" + key + ".png'/></a>");
-			if (key === defaultLanguage) {
+			if (key === savegame.language) {
 				button.addClass("active");
 			}
 			$("#languageOptions").append(button);

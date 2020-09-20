@@ -183,7 +183,7 @@ action properties:
 		screenId, areaId
 	5 - SHOW_AREA: Show areaId from screenId
 		screenId, areaId
-	6 - SHOW_TEXT: Show textId with defaultLanguage
+	6 - SHOW_TEXT: Show textId with savegame.language
 		textId
 	7 - COMPLETE_OBJECTIVE: Complete objectiveId
 		objectiveId
@@ -205,16 +205,20 @@ cursors :
 	7 - ARROW_LEFT
 */
 
-/* Not implemented */
+
 savegame = {
+	language: stringLanguage,
+	screenId: screenId,
+
+	/* Not implemented */
 	inventory: [
 		{
 			objectId: objectId,
 			num: string
 		}
 	],
-	screens{
-		id: {area:{state:..},...},... //Objects removed/hidden, images changed
-	}
-	objectivesCompleted:
+	screens: {
+		//id: {area:{state:..},...},... //Objects removed/hidden, images changed
+	},
+	objectivesCompleted: [ objectiveId ]
 }

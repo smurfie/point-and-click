@@ -175,7 +175,7 @@ function loadScreens(select, screenId) {
 }
 
 function loadScreen(screenId) {
-	//Update the buttons and the areas Menu
+	// Update the buttons and the areas Menu
 	var hasValue = $("#screenList").val() != null;
 	$("#navList li[data-id='areasMenu']").toggle(hasValue);
 	$("#initialScreenDiv").toggle(hasValue);

@@ -199,8 +199,7 @@ function updateFrom20160410To20160808() {
 // Added languages and translations
 function updateFrom20160808To20160810() {
 	stage.texts = {};
-	defaultLanguage = "en_US";
-	stage.defaultLanguage = defaultLanguage;
+	stage.defaultLanguage = "en_US";
 	stage.languages = {
 		"en_US": "English"
 	};
