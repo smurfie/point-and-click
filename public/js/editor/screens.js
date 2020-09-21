@@ -64,8 +64,6 @@ function loadScreensJS() {
 	$("#saveScreen").click(function() {
 		var screenId = $("#screenId").val();
 		var img = $("#screenImg").val();
-		//FIXME: In case of http urls this gets weird
-		var imgName = img.substring(0,img.indexOf("."));
 		
 		if ($(this).closest("dialog").hasClass("add")) {
 			stage.screens[screenId] = {};
@@ -77,7 +75,7 @@ function loadScreensJS() {
 			
 			screen.images[imageId] = {};
 			screen.images[imageId].img = img;
-			screen.images[imageId].name = imgName;
+			screen.images[imageId].name = img;
 			screen.defaultImage = imageId;
 
 			//Create a default area

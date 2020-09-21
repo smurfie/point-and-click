@@ -39,9 +39,10 @@ function fulfillConditionObjectiveCompleted(condition) {
 }
 
 function fulfillConditionAreaHasState(condition) {
-	var area = stage.screens[condition.screen].areas[condition.area];
-	if (!area.currentState) {
-		area.currentState = area.defaultState;
-	}
-	return area.currentState == condition.state;
+	var stateId = savegame.screens && savegame.screens[condition.screen] && 
+				savegame.screens[condition.screen].areas && 
+				savegame.screens[condition.screen].areas[condition.area] &&
+				savegame.screens[condition.screen].areas[condition.area].stateId ?
+				savegame.screens[condition.screen].areas[condition.area].stateId : "default";
+	return stateId === condition.state;
 }

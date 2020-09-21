@@ -17,7 +17,6 @@ stage = {
 			areas:{
 				id: { // always an id = onLoad
 					name: string,
-					currentStateId: currentStateId, // TODO: Move to savegame
 					states: {
 						idState: { // always an id = default
 							name: string, // if != default
@@ -34,22 +33,7 @@ stage = {
 						}
 					},
 					interactions: [
-						{
-							onlyOnce: boolean,
-							conditions: [
-								{
-									typeId: conditionId,
-									negate: boolean
-									// + Condition properties described below
-								}
-							],
-							actions: [
-								{
-									typeId: actionId
-									// + Action properties described below
-								}
-							]
-						}
+						interactionId
 					]
 				}
 			}
@@ -80,26 +64,29 @@ stage = {
 			description: textId, // default text for any mixture using object1
 			id: { // object2 id or screenId_areaId
 				interactions: [
-					{
-						onlyOnce: boolean,
-						conditions: [
-							{
-								typeId: conditionId,
-								negate: boolean
-								// + Condition properties described below
-							}
-						],
-						actions: [
-							{
-								typeId: actionId
-								// + Action properties described below
-							}
-						]
-					}
+					interactionId
 				]
 			}
 		}
 	},
+	interactions: [
+		{
+			onlyOnce: boolean,
+			conditions: [
+				{
+					typeId: conditionId,
+					negate: boolean
+					// + Condition properties described below
+				}
+			],
+			actions: [
+				{
+					typeId: actionId
+					// + Action properties described below
+				}
+			]
+		}
+	],
 	triggers: [
 		{
 			name: string,
@@ -146,11 +133,8 @@ stage = {
 							// + Condition properties described below
 						}
 					],
-					actions: [ // Once the option is clicked
-						{
-							typeId: actionId
-							// + Action properties described below
-						}
+					interactions: [ // Once the option is clicked
+						interactionId
 					]
 				}
 			]
@@ -169,7 +153,8 @@ condition properties:
 		objectId, num
 	2 - OBJECTIVE_COMPLETED: Do you completed objectiveId
 		objectiveId
-	3 - AREA_HAS_STATE:  The areaId in screenId has the currentStateId = stateId
+	3 - AREA_HAS_STATE:  The areaId in screenId has the stateId (if doesn't exists in savegame it's 
+			looked in stage default state)
 		screenId, areaId, stateId
 
 action properties:
@@ -209,7 +194,26 @@ cursors :
 savegame = {
 	language: stringLanguage,
 	screenId: screenId,
-
+	screens: [
+		{
+			screenId: {
+				imageId: imageId,
+				areas: [
+					{
+						areaId: {
+							stateId: stateId
+						}
+					}
+				]
+			}
+		}
+	],
+	onlyOnceInteractionsExecuted: [
+		interactionId
+	],
+	onlyOnceTriggersExecuted : [
+		index
+	],
 	/* Not implemented */
 	inventory: [
 		{
@@ -217,6 +221,7 @@ savegame = {
 			num: string
 		}
 	],
+	//onlyOnce
 	screens: {
 		//id: {area:{state:..},...},... //Objects removed/hidden, images changed
 	},

@@ -103,7 +103,7 @@ var imagePath, cursorPath;
 var stagePath, stageImagePath, stageScreenPath, stageObjectPath, stageAreaPath, stageCharacterPath;
 var inventory = [];
 var objectivesCompleted = {};
-var currentScreen, currentArea, currentObject;
+var currentObject;
 var numImages = 0, loadedImages = 0;
 var textMessages = [];
 
@@ -161,14 +161,17 @@ function loadScreen(screenId) {
 	$("#loadingCanvas").css("background-image", "url('" + imagePath + "loading.gif')");
 	$("#loadingCanvas").show();
 	savegame.screenId = screenId;
-	currentScreen = stage.screens[screenId];
+	var currentScreen = stage.screens[screenId];
 	
 	$("#canvas").empty();
-	// If the currentImage for that screen is empty select the defaultImage
-	currentScreen.currentImage = currentScreen.currentImage || currentScreen.defaultImage;
+
+	// If the savegame image for that screen is empty select the defaultImage from stage
+	var imageId = savegame.screens && savegame.screens[screenId] && 
+			savegame.screens[screenId].imageId ? savegame.screens[screenId].imageId :
+			currentScreen.defaultImage;
 	
 	// Choose between absolute or relative image
-	var screenPath = currentScreen.images[currentScreen.currentImage].img;
+	var screenPath = currentScreen.images[imageId].img;
 	screenPath = isAbsolutePath(screenPath) ? screenPath : stageScreenPath + screenPath;
 	loadAsynchronousImage($('#canvas'), screenPath, true);
 	
@@ -179,8 +182,7 @@ function loadScreen(screenId) {
 		}
 	}
 	// Execute onLoadActions
-	currentArea = currentScreen.areas.onLoad;
-	findAndExecuteActions(currentArea.interactions);
+	findAndExecuteActions(currentScreen.areas.onLoad.interactions);
 }
 
 // Loads all the images and when completed fades out the loading div
@@ -202,10 +204,13 @@ function loadAsynchronousImage(container, imgPath, isBackground){
 }
 
 function loadArea(areaId) {
-	if (areaId!="onLoad") {
-		var stateId = currentScreen.areas[areaId].currentState || "default";
-		var area = currentScreen.areas[areaId];
-		var state = stateId !== "default" ? area.states[stateId] : null;
+	if (areaId != "onLoad") {
+		var stateId = savegame.screens && savegame.screens[savegame.screenId] && 
+				savegame.screens[savegame.screenId].areas && 
+				savegame.screens[savegame.screenId].areas[areaId] &&
+				savegame.screens[savegame.screenId].areas[areaId].stateId ?
+				savegame.screens[savegame.screenId].areas[areaId].stateId : "default";
+		var area = stage.screens[savegame.screenId].areas[areaId];
 		
 		// Load all areas, even the hidden ones
 		var img = $("<img id='object_" + areaId + "' class='area" + (getAreaStateProperty(areaId, stateId, "hidden") ? " hidden" : "") + "'>");
@@ -246,8 +251,7 @@ function loadArea(areaId) {
 			e.preventDefault();
 			e.stopPropagation();
 			if (!currentObject) {
-				currentArea = area;
-				findAndExecuteActions(currentArea.interactions);
+				findAndExecuteActions(area.interactions);
 			} else {
 				useObjectArea(currentObject, areaId);
 			}
@@ -258,23 +262,34 @@ function loadArea(areaId) {
 }
 
 function findAndExecuteActions(interactions) {	
-	// Loop all interactions until found ONE that all conditions are fulfilled
+	// Loop all interactions until found ONE that all conditions are fulfilled and is not an
+	// onlyOnce interaction already executed
 	var i;
-	for (i=0; i<interactions.length && !fulfillConditions(interactions[i].conditions); i++);
+	var interactionFound = false;
+	for (i=0; i<interactions.length && !interactionFound; i++) {
+		interactionFound = fulfillConditions(stage.interactions[interactions[i]].conditions) &&
+			(!stage.interactions[interactions[i]].onlyOnce || 
+			typeof savegame.onlyOnceInteractionsExecuted === "undefined" ||
+			!savegame.onlyOnceInteractionsExecuted.includes(interactions[i]));
+	}
 	
-	var interactionFound = i < interactions.length;
 	if (interactionFound) {
+		i--;
 		// If there is an object selected (user is using one object with another), we always unselect it
 		// except when there is only one action and it's showing a text (normally is the case when the action that the user
 		// intended to do failed and a text is shown).
-		if (currentObject && (interactions[i].actions.length!=1 || interactions[i].actions[0].typeId!=ACTIONS.SHOW_TEXT)) {
+		if (currentObject && (stage.interactions[interactions[i]].actions.length!=1 ||
+				stage.interactions[interactions[i]].actions[0].typeId!=ACTIONS.SHOW_TEXT)) {
 			unselectObject();
 		}
-		executeActions(interactions[i].actions);
+		executeActions(stage.interactions[interactions[i]].actions);
 		
-		// If the interaction is marked to be executed only once, remove it.
-		if (interactions[i].onlyOnce) {
-			interactions.splice(i--, 1);
+		// If the interaction is marked to be executed only once, mark it in savefile.
+		if (stage.interactions[interactions[i]].onlyOnce) {
+			if (!savegame.onlyOnceInteractionsExecuted) {
+				savegame.onlyOnceInteractionsExecuted = [];
+			}
+			savegame.onlyOnceInteractionsExecuted.push(interactions[i]);
 		}
 		
 		findAndExecuteTriggers();
@@ -283,15 +298,19 @@ function findAndExecuteActions(interactions) {
 }
 
 function findAndExecuteTriggers() {
-	// Execute all triggers than fulfill its conditions
+	// Execute all triggers than fulfill its conditions and are not onlyOnce triggers already executed
 	for (var i=0; i<stage.triggers.length; i++) {
-		if (fulfillConditions(stage.triggers[i].conditions)) {
+		if (fulfillConditions(stage.triggers[i].conditions) &&
+				(!stage.triggers[i].onlyOnce || 
+				typeof savegame.onlyOnceTriggersExecuted === "undefined" ||
+				!savegame.onlyOnceTriggersExecuted.includes(i))) {
 			executeActions(stage.triggers[i].actions);
 			
-			// If the trigger has the flag onlyOnce, delete it after executing his actions
-			if (stage.triggers[i].onlyOnce) {
-				stage.triggers.splice(i--, 1);
+			// If the trigger is marked to be executed only once,  mark it in savefile.
+			if (!savegame.onlyOnceTriggersExecuted) {
+				savegame.onlyOnceTriggersExecuted = [];
 			}
+			savegame.onlyOnceTriggersExecuted.push(i);
 		}
 	}
 }

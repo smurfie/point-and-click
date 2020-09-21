@@ -219,11 +219,6 @@ function loadClickablesJS() {
 			currentArea.states[$("#stateList").val()].name = stateName;
 		}
 		
-		if (!currentArea.defaultState) {
-			currentArea.defaultState = $("#stateList option:first").val();
-		}
-			
-		
 		$(this).closest("dialog")[0].close();
 	});
 }

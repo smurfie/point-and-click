@@ -116,7 +116,20 @@ function executeActionAreaCompleteObjective(action) {
 }
 
 function executeActionAreaChangeState(action) {
-	stage.screens[action.screen].areas[action.area].currentState = action.state;
+	if (!savegame.screens) {
+		savegame.screens = {};
+	}
+	if (!savegame.screens[action.screen]) {
+		savegame.screens[action.screen] = {};
+	}
+	if (!savegame.screens[action.screen].areas) {
+		savegame.screens[action.screen].areas = {};
+	}
+	if (!savegame.screens[action.screen].areas[action.area]) {
+		savegame.screens[action.screen].areas[action.area] = {};
+	}
+
+	savegame.screens[action.screen].areas[action.area].stateId = action.state;
 	$("#object_" + action.area).remove();
 	if (action.screen === savegame.screenId) {
 		loadArea(action.area);
@@ -124,10 +137,17 @@ function executeActionAreaChangeState(action) {
 }
 
 function executeActionScreenChangeImage(action) {
-	stage.screens[action.screen].currentImage = action.image;
+	if (!savegame.screens) {
+		savegame.screens = {};
+	}
+	if (!savegame.screens[action.screen]) {
+		savegame.screens[action.screen] = {};
+	}
+
+	savegame.screens[action.screen].imageId = action.image;
 	if (action.screen === savegame.screenId) {
 		// Reload only the screen image (not all areas)
-		var screenPath = currentScreen.images[currentScreen.currentImage].img;
+		var screenPath = stage.screens[savegame.screenId].images[action.image].img;
 		screenPath = isAbsolutePath(screenPath) ? screenPath : stageScreenPath + screenPath;
 		loadAsynchronousImage($('#canvas'), screenPath, true);
 	}
