@@ -123,7 +123,12 @@ function executeActionScreenChangeImage(action) {
 }
 
 function executeActionTalk(action) {
-	var talk = stage.talks[action.talk];
+	loadTalk(action.talk);
+	savegame.talkId = action.talk;
+}
+
+function loadTalk(talkId) {
+	var talk = stage.talks[talkId];
 	var character = stage.characters[talk.characterId];
 	
 	// Image
@@ -166,7 +171,6 @@ function executeActionTalk(action) {
 	$("#conversationNext").toggle(!multipleAnswers);
 	
 	$("#conversation").show();
-	savegame.talkId = action.talk;
 }
 
 function executeTalkInteractionsCallback(interactions) {
