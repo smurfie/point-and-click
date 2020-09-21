@@ -67,3 +67,15 @@ function isAbsolutePath(url) {
 function unescapeNewLinesHTML(text) {
 	return text.replace(/\n/g, '<br>');
 }
+
+// Creates the screen and the area if needed in the savegame
+function createScreenArea(screen, area) {
+	if (!savegame.screens[screen]) {
+		savegame.screens[screen] = {
+			areas: {}
+		};
+	}
+	if (area && !savegame.screens[screen].areas[area]) {
+		savegame.screens[screen].areas[area] = {};
+	}
+}

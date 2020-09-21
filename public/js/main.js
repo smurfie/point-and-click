@@ -16,28 +16,28 @@ $(document).ready(function() {
 	});
 	
 	$("#inventory").on("mouseenter", "img", function(){
-		if (!currentObject) {
+		if (!savegame.objectSelected) {
 			$("#text").html($(this).data("object-description"));
-		} else if (currentObject != $(this).data("object")) {
+		} else if (savegame.objectSelected != $(this).data("object")) {
 			$("#text").html($("#text").html() + "<span>" + $(this).data("object-description") + "</span>")
 		}
 	});
 	
 	$("#inventory").on("mouseleave", "img", function(){
-		if (!currentObject) {
+		if (!savegame.objectSelected) {
 			$("#text").html("");
-		} else if (currentObject != $(this).data("object")) {
+		} else if (savegame.objectSelected != $(this).data("object")) {
 			$("#text span").remove();
 		}
 	});
 	
 	$("#inventory").on("click", "img", function(){
-		if (!currentObject) { // Select object
+		if (!savegame.objectSelected) { // Select object
 			selectObject($(this));
-		} else if (currentObject == $(this).data("object")) { // Unselect object
+		} else if (savegame.objectSelected == $(this).data("object")) { // Unselect object
 			unselectObject();
 		} else {
-			useObjectObject(currentObject, $(this).data("object"));
+			useObjectObject(savegame.objectSelected, $(this).data("object"));
 		}
 	});
 	
@@ -61,9 +61,9 @@ $(document).ready(function() {
 		$("#options").hide();
 	});
 	
-	// If not object is selected, unselect the currentObject
+	// If not object is selected, unselect the savegame.objectSelected
 	$("#canvas").click(function(){
-		if (currentObject) {
+		if (savegame.objectSelected) {
 			unselectObject();
 		}
 	});
@@ -98,12 +98,14 @@ $(document).ready(function() {
 });
 
 var stage = {};
-var savegame = {};
+var savegame = {
+	screens: {},
+	onlyOnceInteractionsExecuted: [],
+	onlyOnceTriggersExecuted: [],
+	inventory: []
+};
 var imagePath, cursorPath;
 var stagePath, stageImagePath, stageScreenPath, stageObjectPath, stageAreaPath, stageCharacterPath;
-var inventory = [];
-var objectivesCompleted = {};
-var currentObject;
 var numImages = 0, loadedImages = 0;
 var textMessages = [];
 
@@ -166,7 +168,7 @@ function loadScreen(screenId) {
 	$("#canvas").empty();
 
 	// If the savegame image for that screen is empty select the defaultImage from stage
-	var imageId = savegame.screens && savegame.screens[screenId] && 
+	var imageId = savegame.screens[screenId] && 
 			savegame.screens[screenId].imageId ? savegame.screens[screenId].imageId :
 			currentScreen.defaultImage;
 	
@@ -205,15 +207,20 @@ function loadAsynchronousImage(container, imgPath, isBackground){
 
 function loadArea(areaId) {
 	if (areaId != "onLoad") {
-		var stateId = savegame.screens && savegame.screens[savegame.screenId] && 
-				savegame.screens[savegame.screenId].areas && 
+		var stateId = savegame.screens[savegame.screenId] && 
 				savegame.screens[savegame.screenId].areas[areaId] &&
 				savegame.screens[savegame.screenId].areas[areaId].stateId ?
 				savegame.screens[savegame.screenId].areas[areaId].stateId : "default";
+		var isHidden = savegame.screens[savegame.screenId] && 
+				savegame.screens[savegame.screenId].areas[areaId] &&
+				typeof savegame.screens[savegame.screenId].areas[areaId].hidden !== "undefined" ?
+				savegame.screens[savegame.screenId].areas[areaId].hidden :
+				getAreaStateProperty(areaId, stateId, "hidden");
 		var area = stage.screens[savegame.screenId].areas[areaId];
 		
 		// Load all areas, even the hidden ones
-		var img = $("<img id='object_" + areaId + "' class='area" + (getAreaStateProperty(areaId, stateId, "hidden") ? " hidden" : "") + "'>");
+		var img = $("<img id='object_" + areaId + "' class='area" + 
+				(isHidden ? " hidden" : "") + "'>");
 		var imgPath = getAreaStateProperty(areaId, stateId, "img");
 		imgPath = isAbsolutePath(imgPath) ? imgPath : stageAreaPath + imgPath;
 		loadAsynchronousImage(img, imgPath, false);
@@ -232,15 +239,15 @@ function loadArea(areaId) {
 		
 		img.mouseenter(function(){
 			var description = getAreaStateProperty(areaId, stateId, "description");
-			if (!currentObject) {
+			if (!savegame.objectSelected) {
 				$("#text").html(description);
-			} else if (currentObject != $(this).data("object")) {
+			} else if (savegame.objectSelected != $(this).data("object")) {
 				$("#text").html($("#text").html() + "<span>" + description + "</span>")
 			}		
 		});
 		
 		img.mouseleave(function(){
-			if (!currentObject) {
+			if (!savegame.objectSelected) {
 				$("#text").html("");
 			} else {
 				$("#text span").remove();
@@ -250,10 +257,10 @@ function loadArea(areaId) {
 		img.click(function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			if (!currentObject) {
+			if (!savegame.objectSelected) {
 				findAndExecuteActions(area.interactions);
 			} else {
-				useObjectArea(currentObject, areaId);
+				useObjectArea(savegame.objectSelected, areaId);
 			}
 		});
 		
@@ -268,9 +275,8 @@ function findAndExecuteActions(interactions) {
 	var interactionFound = false;
 	for (i=0; i<interactions.length && !interactionFound; i++) {
 		interactionFound = fulfillConditions(stage.interactions[interactions[i]].conditions) &&
-			(!stage.interactions[interactions[i]].onlyOnce || 
-			typeof savegame.onlyOnceInteractionsExecuted === "undefined" ||
-			!savegame.onlyOnceInteractionsExecuted.includes(interactions[i]));
+			!(stage.interactions[interactions[i]].onlyOnce && 
+			savegame.onlyOnceInteractionsExecuted.includes(interactions[i]));
 	}
 	
 	if (interactionFound) {
@@ -278,7 +284,7 @@ function findAndExecuteActions(interactions) {
 		// If there is an object selected (user is using one object with another), we always unselect it
 		// except when there is only one action and it's showing a text (normally is the case when the action that the user
 		// intended to do failed and a text is shown).
-		if (currentObject && (stage.interactions[interactions[i]].actions.length!=1 ||
+		if (savegame.objectSelected && (stage.interactions[interactions[i]].actions.length!=1 ||
 				stage.interactions[interactions[i]].actions[0].typeId!=ACTIONS.SHOW_TEXT)) {
 			unselectObject();
 		}
@@ -286,9 +292,6 @@ function findAndExecuteActions(interactions) {
 		
 		// If the interaction is marked to be executed only once, mark it in savefile.
 		if (stage.interactions[interactions[i]].onlyOnce) {
-			if (!savegame.onlyOnceInteractionsExecuted) {
-				savegame.onlyOnceInteractionsExecuted = [];
-			}
 			savegame.onlyOnceInteractionsExecuted.push(interactions[i]);
 		}
 		
@@ -301,15 +304,11 @@ function findAndExecuteTriggers() {
 	// Execute all triggers than fulfill its conditions and are not onlyOnce triggers already executed
 	for (var i=0; i<stage.triggers.length; i++) {
 		if (fulfillConditions(stage.triggers[i].conditions) &&
-				(!stage.triggers[i].onlyOnce || 
-				typeof savegame.onlyOnceTriggersExecuted === "undefined" ||
-				!savegame.onlyOnceTriggersExecuted.includes(i))) {
+				!(stage.triggers[i].onlyOnce &&
+				savegame.onlyOnceTriggersExecuted.includes(i))) {
 			executeActions(stage.triggers[i].actions);
 			
 			// If the trigger is marked to be executed only once,  mark it in savefile.
-			if (!savegame.onlyOnceTriggersExecuted) {
-				savegame.onlyOnceTriggersExecuted = [];
-			}
 			savegame.onlyOnceTriggersExecuted.push(i);
 		}
 	}
@@ -319,10 +318,10 @@ function drawInventory() {
 	$("#inventory").empty();
 	
 	var i=0;
-	for (; i<inventory.length; i++) {
+	for (; i<savegame.inventory.length; i++) {
 		var inventorySlot = $("<div class='inventorySlot'></div>");
-		var object = stage.objects[inventory[i].object];
-		var num = inventory[i].num;
+		var object = stage.objects[savegame.inventory[i].object];
+		var num = savegame.inventory[i].num;
 		var img = object.img;
 		var description = getText(object.description);
 		for (var j=0; j<object.stacks.length && num>=object.stacks[j].minNumber; j++) {
@@ -331,12 +330,13 @@ function drawInventory() {
 			
 		}
 		img = isAbsolutePath(img) ? img : stageObjectPath + img;
-		var imgDOM = $("<img data-object='" + inventory[i].object + "' data-object-description='" + escapeSingleQuotes(description) +
+		var imgDOM = $("<img data-object='" + savegame.inventory[i].object
+				+ "' data-object-description='" + escapeSingleQuotes(description) +
 				"' src='" + img + "'>");
 		
-		//If more than one item, print how many
-		if (inventory[i].num > 1) {
-			var p = $("<p class='inventoryNum'>" + inventory[i].num + "</p>")
+		// If more than one item, print how many
+		if (savegame.inventory[i].num > 1) {
+			var p = $("<p class='inventoryNum'>" + savegame.inventory[i].num + "</p>")
 			inventorySlot.append(p);
 		}		
 		inventorySlot.append(imgDOM);
@@ -351,7 +351,7 @@ function drawInventory() {
 }
 
 function selectObject(objectDOM) {
-	currentObject = objectDOM.data("object");
+	savegame.objectSelected = objectDOM.data("object");
 	objectDOM.parent().addClass("selected");
 	$("#canvas").addClass("objectSelected");
 	document.body.style.cursor="url('" + cursorPath + "gears.png') 10 10, default";
@@ -359,8 +359,8 @@ function selectObject(objectDOM) {
 }
 
 function unselectObject() {
-	var objectDOM = $("#inventory img[data-object=" + currentObject + "]");
-	currentObject = null;
+	var objectDOM = $("#inventory img[data-object=" + savegame.objectSelected + "]");
+	savegame.objectSelected = null;
 	objectDOM.parent().removeClass("selected");
 	$("#canvas").removeClass("objectSelected");
 	document.body.style.cursor="default";

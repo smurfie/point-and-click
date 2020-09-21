@@ -396,7 +396,7 @@ function moveToRoot(interactions) {
 			interactionId = randomString(8);
 		}
 		if (stage.interactions[interactionId]) {
-			throw "I don't believed it error!"
+			throw new Error("unbelievable odd probability error!");
 		}
 
 		stage.interactions[interactionId] = interactions[i];

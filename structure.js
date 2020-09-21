@@ -69,8 +69,8 @@ stage = {
 			}
 		}
 	},
-	interactions: [
-		{
+	interactions: {
+		interactionId: {
 			onlyOnce: boolean,
 			conditions: [
 				{
@@ -86,7 +86,7 @@ stage = {
 				}
 			]
 		}
-	],
+	},
 	triggers: [
 		{
 			name: string,
@@ -194,36 +194,33 @@ cursors :
 savegame = {
 	language: stringLanguage,
 	screenId: screenId,
-	screens: [
-		{
-			screenId: {
-				imageId: imageId,
-				areas: [
-					{
-						areaId: {
-							stateId: stateId
-						}
+	screens: {
+		screenId: {
+			imageId: imageId,
+			areas: [
+				{
+					areaId: {
+						stateId: stateId,
+						hidden: boolean
 					}
-				]
-			}
+				}
+			]
 		}
-	],
+	},
 	onlyOnceInteractionsExecuted: [
 		interactionId
 	],
 	onlyOnceTriggersExecuted : [
 		index
 	],
-	/* Not implemented */
 	inventory: [
 		{
 			objectId: objectId,
 			num: string
 		}
 	],
-	//onlyOnce
-	screens: {
-		//id: {area:{state:..},...},... //Objects removed/hidden, images changed
-	},
-	objectivesCompleted: [ objectiveId ]
+	objectSelected: objectId,
+	objectivesCompleted: {
+		objectiveId: true
+	}
 }

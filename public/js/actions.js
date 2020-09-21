@@ -53,57 +53,49 @@ function executeActionGoTo(action) {
 
 function executeActionPickUpObject(action) {
 	var found = false;
-	for (var i=0; i<inventory.length && !found; i++) {
-		if (inventory[i].object == action.object) {
+	for (var i=0; i<savegame.inventory.length && !found; i++) {
+		if (savegame.inventory[i].object == action.object) {
 			found = true;
-			inventory[i].num += parseInt(action.num);
+			savegame.inventory[i].num += parseInt(action.num);
 		}
 	}
 	if (!found) {
-		inventory.push({
+		savegame.inventory.push({
 			"object": action.object,
 			"num": parseInt(action.num)
 		});
 	}
 	drawInventory();
 	
-	//Scroll to bottom of inventory
+	// Scroll to bottom of inventory
 	 $("#inventory").stop().animate({scrollTop:$("#inventory")[0].scrollHeight}, 1000)
 }
 
 function executeActionRemoveObject(action) {
 	var found = false;
-	for (var i=0; i<inventory.length && !found; i++) {
-		if (inventory[i].object == action.object) {
+	for (var i=0; i<savegame.inventory.length && !found; i++) {
+		if (savegame.inventory[i].object == action.object) {
 			found = true;
-			inventory[i].num -= parseInt(action.num);
-			if (inventory[i].num <= 0) {
-				inventory.splice(i,1);
+			savegame.inventory[i].num -= parseInt(action.num);
+			if (savegame.inventory[i].num <= 0) {
+				savegame.inventory.splice(i,1);
 			}
 		}
 	}
 	drawInventory();
 }
 
-// To be backwards compatible hide all states of the object
-// In the future a parameter state can be added
+// Mark the area as hidden in the savegame
 function executeActionHideArea(action) {
-	for (var key in stage.screens[action.screen].areas[action.area].states) {
-		if (stage.screens[action.screen].areas[action.area].states.hasOwnProperty(key)) {
-			stage.screens[action.screen].areas[action.area].states[key].hidden = true;
-		}
-	}
+	createScreenArea(action.screen, action.area);
+	savegame.screens[action.screen].areas[action.area].hidden = true;
 	$("#object_" + action.area).addClass("hidden");
 }
 
-//To be backwards compatible show all states of the object
-//In the future a parameter state can be added
+// Mark the area as shown in the savegame
 function executeActionShowArea(action) {
-	for (var key in stage.screens[action.screen].areas[action.area].states) {
-		if (stage.screens[action.screen].areas[action.area].states.hasOwnProperty(key)) {
-			stage.screens[action.screen].areas[action.area].states[key].hidden = false;
-		}
-	}
+	createScreenArea(action.screen, action.area);
+	savegame.screens[action.screen].areas[action.area].hidden = false;
 	$("#object_" + action.area).removeClass("hidden");
 }
 
@@ -112,22 +104,11 @@ function executeActionShowText(action) {
 }
 
 function executeActionAreaCompleteObjective(action) {
-	objectivesCompleted[action.objective] = true;
+	savegame.objectivesCompleted[action.objective] = true;
 }
 
 function executeActionAreaChangeState(action) {
-	if (!savegame.screens) {
-		savegame.screens = {};
-	}
-	if (!savegame.screens[action.screen]) {
-		savegame.screens[action.screen] = {};
-	}
-	if (!savegame.screens[action.screen].areas) {
-		savegame.screens[action.screen].areas = {};
-	}
-	if (!savegame.screens[action.screen].areas[action.area]) {
-		savegame.screens[action.screen].areas[action.area] = {};
-	}
+	createScreenArea(action.screen, action.area);
 
 	savegame.screens[action.screen].areas[action.area].stateId = action.state;
 	$("#object_" + action.area).remove();
@@ -137,12 +118,7 @@ function executeActionAreaChangeState(action) {
 }
 
 function executeActionScreenChangeImage(action) {
-	if (!savegame.screens) {
-		savegame.screens = {};
-	}
-	if (!savegame.screens[action.screen]) {
-		savegame.screens[action.screen] = {};
-	}
+	createScreenArea(action.screen, action.area);
 
 	savegame.screens[action.screen].imageId = action.image;
 	if (action.screen === savegame.screenId) {
