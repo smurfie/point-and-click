@@ -1,10 +1,3 @@
-function executeInteractionsCallback(interactions) {
-	return function(){
-		$("#conversation").hide();
-		findAndExecuteActions(interactions);
-	}
-}
-
 function executeActions(actions) {
 	if (actions == null) return;
 	for (var i=0; i<actions.length; i++){
@@ -48,7 +41,7 @@ function executeAction(action) {
 }
 
 function executeActionGoTo(action) {
-	loadScreen(action.screen);
+	loadScreen(action.screen, true);
 }
 
 function executeActionPickUpObject(action) {
@@ -149,12 +142,12 @@ function executeActionTalk(action) {
 			if (ul.children().size() === 0) {
 				p.html((talk.characterId === stage.mainCharacter ? "" : "<strong>\"" + getText(character.name) + "\": </strong>") + 
 				unescapeNewLinesHTML(getText(answer.text)) + "</p>");
-				next.click(executeInteractionsCallback(answer.interactions));
+				next.click(executeTalkInteractionsCallback(answer.interactions));
 			} else {
 				p.html("");
 			}
 			var li = $("<li style='color:" + stage.characters[talk.characterId].fontColor + "'>" + getText(answer.text) + "</li>");
-			li.click(executeInteractionsCallback(answer.interactions));
+			li.click(executeTalkInteractionsCallback(answer.interactions));
 			ul.append(li);
 		}
 	}
@@ -173,4 +166,13 @@ function executeActionTalk(action) {
 	$("#conversationNext").toggle(!multipleAnswers);
 	
 	$("#conversation").show();
+	savegame.talkId = action.talk;
+}
+
+function executeTalkInteractionsCallback(interactions) {
+	return function(){
+		$("#conversation").hide();
+		delete savegame.talkId;
+		findAndExecuteActions(interactions);
+	}
 }

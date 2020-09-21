@@ -48,11 +48,7 @@ $(document).ready(function() {
 	
 	$("#okOption").click(function() {
 		savegame.language = $("#languageOptions a.active").data("lang");
-		updateStageName();
-
-		// Reload the screen and inventory to let changes take effect
-		drawInventory();
-		loadScreen(savegame.screenId);
+		reloadFromSavegame();
 		
 		$("#options").hide();
 	});
@@ -102,7 +98,8 @@ var savegame = {
 	screens: {},
 	onlyOnceInteractionsExecuted: [],
 	onlyOnceTriggersExecuted: [],
-	inventory: []
+	inventory: [],
+	objectivesCompleted: {}
 };
 var imagePath, cursorPath;
 var stagePath, stageImagePath, stageScreenPath, stageObjectPath, stageAreaPath, stageCharacterPath;
@@ -156,10 +153,10 @@ function scaleCanvas() {
 }
 
 function loadStage() {
-	loadScreen(stage.initialScreen);
+	loadScreen(stage.initialScreen, true);
 }
 
-function loadScreen(screenId) {
+function loadScreen(screenId, onLoadActions) {
 	$("#loadingCanvas").css("background-image", "url('" + imagePath + "loading.gif')");
 	$("#loadingCanvas").show();
 	savegame.screenId = screenId;
@@ -183,8 +180,9 @@ function loadScreen(screenId) {
 			loadArea(areaId);
 		}
 	}
-	// Execute onLoadActions
-	findAndExecuteActions(currentScreen.areas.onLoad.interactions);
+	if (onLoadActions) {
+		findAndExecuteActions(currentScreen.areas.onLoad.interactions);
+	}
 }
 
 // Loads all the images and when completed fades out the loading div

@@ -222,5 +222,6 @@ savegame = {
 	objectSelected: objectId,
 	objectivesCompleted: {
 		objectiveId: true
-	}
+	},
+	talkId: talkId
 }
