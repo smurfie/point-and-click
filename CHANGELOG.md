@@ -3,8 +3,13 @@
 ## TODO
 - Update Manual
 
-## Nice to have
-- Savegame (see structure.json file)
+## 2020-09-22:
+- Savegame (save / load)
+- Moved all interactions to root
+- Engine version and stage version (major.minor)
+- Add options button
+- Improved UX options popup
+- Removed some remaining jsp tags
 
 ## 2020-09-19:
 - Removed Action End
