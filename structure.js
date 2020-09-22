@@ -144,6 +144,7 @@ stage = {
 	languages: {
 		id: string, // Example "en_US": "English"
 	},
+	engineVersion: number,
 	version: number
 }
 
@@ -223,5 +224,8 @@ savegame = {
 	objectivesCompleted: {
 		objectiveId: true
 	},
-	talkId: talkId
+	talkId: talkId,
+	engineVersion: number,
+	stageVersion: number,
+	timestamp: date
 }

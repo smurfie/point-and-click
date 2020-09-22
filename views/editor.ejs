@@ -8,7 +8,6 @@
 		<link rel="stylesheet" type="text/css" href="/js/jquery-ui/jquery-ui.css"/>
 		<link rel="stylesheet" href="/css/main.css">
 		<link rel="stylesheet" href="/css/editor.css">
-		<jsp:include page="includes/analytics.jsp" />
 	</head>
 	<body>
 		<div id="canvas"></div>
@@ -275,6 +274,16 @@
 		<div id="downMenu">
 			<input id="folderName" type="text" placeholder="Folder Name"/>
 			<input id="stageName" type="text" placeholder="Stage Name"/>
+			<input id="stageVersion" type="text" placeholder="Stage Version"/>
+			<div class="help-tooltip help-tooltip-up">
+				<p>
+					The version follow the format major.minor (xxx.yyy). I.e: 1.0 where 1 is the major
+					and the 0 is the minor. Each time you deploy your game you should modify this.
+					If it is a breaking change and you have to invalidate the savegames you should
+					increment the major (2.0), otherwise if for example you only modified texts you should
+					increment the minor (1.1) so the savegames are still compatible.
+				</p>
+			</div>
 			<input id="canvasWidth" type="number" placeholder="Canvas Width(px)" width="100"/>
 			<img src="../img/flags/en_US.png" id="defaultLanguage"/>
 			<div class="help-tooltip help-tooltip-up">

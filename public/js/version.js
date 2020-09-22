@@ -1,7 +1,8 @@
 function updateToLastVersion() {
 	var versionError = false;
-	while (!versionError && stage.version !== VERSION) {
-		switch (stage.version) {
+	var version = typeof stage.version === "number" ? stage.version : stage.engineVersion;
+	while (!versionError && version !== VERSION) {
+		switch (version) {
 		case 20151115:
 			console.log("Updating from 20151115 to 20160114...");
 			versionError = !updateFrom20151115To20160114();
@@ -50,11 +51,16 @@ function updateToLastVersion() {
 			console.log("Updating from 20200918 to 20200920...");
 			versionError = !updateFrom20200918To20200920();
 			break;
+		case 20200920:
+			console.log("Updating from 20200920 to 20200922...");
+			versionError = !updateFrom20200920To20200922();
+			break;
 		default:
 			console.log("Error: Version not Found.");
 			versionError = true;
 			break;
 		}
+		version = typeof stage.version === "number" ? stage.version : stage.engineVersion;
 	}
 }
 
@@ -403,4 +409,10 @@ function moveToRoot(interactions) {
 		interactionsModified.push(interactionId);
 	}
 	return interactionsModified;
+}
+
+function updateFrom20200920To20200922() {
+	stage.engineVersion = 20200922;
+	stage.version = "0.0";
+	return true;
 }

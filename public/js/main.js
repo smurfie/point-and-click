@@ -45,16 +45,32 @@ $(document).ready(function() {
 		$("#languageOptions a").removeClass("active");
 		$(this).addClass("active");
 	});
+
+	$(".slot").on("click", ".save" ,function() {
+		var slot = $(this).parent(".slot").data("slot");
+		saveSavegame(slot);
+		hideOptions();
+	});
+
+	$(".slot").on("click", ".load" ,function() {
+		var slot = $(this).parent(".slot").data("slot");
+		loadSavegame(slot);
+		hideOptions();
+	});
 	
+	$("#optionsImg").click(function() {
+		showOptions();
+	});
+
 	$("#okOption").click(function() {
 		savegame.language = $("#languageOptions a.active").data("lang");
 		reloadFromSavegame();
 		
-		$("#options").hide();
+		hideOptions();
 	});
 	
 	$("#cancelOption").click(function() {
-		$("#options").hide();
+		hideOptions();
 	});
 	
 	// If not object is selected, unselect the savegame.objectSelected
@@ -126,10 +142,9 @@ function init() {
 	drawInventory();
 	loadStage();
 
-	// If more than one language, draw the options menu
+	// If more than one language, show the options menu
 	if (Object.keys(stage.languages).length > 1) {
-		drawOptionsMenu();
-		$("#options").show();
+		showOptions();
 	}
 }
 
@@ -144,7 +159,8 @@ function scaleCanvas() {
 	if (stage.width) {
 		$("#canvas, #conversation, #loadingCanvas").css("width", (stage.width + 4) + "px");
 		$("#inventory").css("left", (stage.width + 2) + "px");
-		$("#text").css("width", (stage.width + 186) + "px");
+		$("#text").css("width", (stage.width + 143) + "px");
+		$("#optionsImg").css("left", (stage.width + 143) + "px");
 		$("#options").css("width", (stage.width + 186) + "px");
 		
 		$("#conversationText").css("width", (stage.width - 300) + "px");
@@ -393,7 +409,17 @@ function useMixture(mixture, objectId) {
 	}
 }
 
-function drawOptionsMenu() {
+function showOptions() {
+	drawLanguages();
+	drawSavegameSlots();
+	$("#options").show();
+}
+
+function hideOptions() {
+	$("#options").hide();
+}
+
+function drawLanguages() {
 	$("#languageOptions").empty();
 	
 	for (var key in stage.languages) {
@@ -403,6 +429,25 @@ function drawOptionsMenu() {
 				button.addClass("active");
 			}
 			$("#languageOptions").append(button);
+		}
+	}
+}
+
+function drawSavegameSlots() {
+	for (var i=0; i<6; i++) {
+		var slot = $($("#savegameSlots .slot")[i]);
+
+		slot.empty();
+		var json = existsSavegame(i);
+		var imgSave = "<img src='/img/menu/save.png' class='save'/>";
+		var imgLoad = "<img src='/img/menu/load.svg' class='load'/>";
+		if (json) {
+			var date = new Date(json.timestamp);
+			var dateString = date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear() +
+					" - " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+			slot.html("<p><b>#" + (i + 1) + ":</b> " + dateString + "</p>" + imgLoad + imgSave);
+		} else {
+			slot.html("<p><b>#" + (i + 1) + "</b></p>" + imgSave);
 		}
 	}
 }

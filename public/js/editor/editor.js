@@ -113,6 +113,16 @@ $(document).ready(function(){
 				" (" + getText(stage.stageName) + ")" : "");
 	});
 	
+	$("#stageVersion").change(function(){
+		// Check that the new value follows the format major.minor
+		if (/^[0-9]+\.[0-9]+$/.test($("#stageVersion").val())) {
+			$("#stageVersion").data("old", $("#stageVersion").val());
+			stage.version = $("#stageVersion").val();
+		} else {
+			$("#stageVersion").val($("#stageVersion").data("old"));
+		}
+	});
+	
 	$("#canvasWidth").change(function(){
 		stage.width = parseInt($("#canvasWidth").val());
 		scaleCanvas();
@@ -148,7 +158,8 @@ function init(refresh) {
 			objectives: {},
 			mixtures: {},
 			triggers: [],
-			version: VERSION,
+			engineVersion: VERSION,
+			version: "0.0",
 			folderName: stagename,
 			width: 960,
 			texts: {},
@@ -185,6 +196,8 @@ function init(refresh) {
 	$("#folderName").val(stage.folderName);
 	$("#folderName").change();
 	$("#stageName").val(getText(stage.stageName));
+	$("#stageVersion").val(stage.version);
+	$("#stageVersion").data("old", stage.version);
 	$("#stageName").change();
 	$("#canvasWidth").val(stage.width ? stage.width : 960);
 	$("#canvasWidth").change();
