@@ -30,7 +30,7 @@ function loadConditionsEditorJS() {
 		loadConditions($("#interactionConditionList"), currentInteraction.conditions, i-1);
 	});
 	
-	//Modal Conditions
+	// Modal Conditions
 	$("#conditionTypeList").change(function() {
 		$(".conditionType").hide();
 		$("." + conditionClass($(this).val())).show();
@@ -42,7 +42,7 @@ function loadConditionsEditorJS() {
 		saveCondition();
 	});
 	
-	//Lists
+	// Lists
 	$("#interactionConditionList").change(function() {
 		var hasValue = $(this).val() !== null;
 		$("#editInteractionConditionButton").prop("disabled", !hasValue);
@@ -57,7 +57,7 @@ function loadConditionsEditorJS() {
 		$("#delConditionMixtureButton").prop("disabled", !hasValue);
 	});
 	
-	//Modal Lists
+	// Modal Lists
 	$("#conditionScreenList").change(function() {
 		if (!$(this).val()) {
 			return;
@@ -156,7 +156,7 @@ function conditionDescription(condition) {
 	return "NO_DESCRIPTION";
 }
 
-//Load (if dialog hasClass loadData, load the current condition and remove the class)
+// Load (if dialog hasClass loadData, load the current condition and remove the class)
 function loadConditionsMenu(conditionTypeId) {
 	if (typeof conditionTypeId !== "number") {
 		conditionTypeId = parseInt(conditionTypeId);
@@ -183,7 +183,7 @@ function loadConditionHasObject() {
 	$("#conditionObjectNum").val($("#saveCondition").closest("dialog").hasClass("loadData") ? 
 			currentConditionList[parseInt($("#conditionId").val())].num : "1");
 	
-	//If there is no objects disable the save button
+	// If there is no objects disable the save button
 	$("#saveCondition").prop("disabled", $("#conditionObjectList").val() === null);
 }
 
@@ -191,7 +191,7 @@ function loadConditionObjectiveCompleted() {
 	loadObjectives($("#conditionObjectiveList"), $("#saveCondition").closest("dialog").hasClass("loadData") ?
 			currentConditionList[parseInt($("#conditionId").val())].objective : "last");
 	
-	//If there is no objectives disable the save button
+	// If there is no objectives disable the save button
 	$("#saveCondition").prop("disabled", $("#conditionObjectiveList").val() === null);
 }
 
@@ -199,18 +199,18 @@ function loadConditionAreaHasState() {
 	loadScreens($("#conditionScreenList"), $("#saveCondition").closest("dialog").hasClass("loadData") ? 
 			currentConditionList[parseInt($("#conditionId").val())].screen : currentScreenId);
 	
-	//If there is no area (because screen always exists at least one) disable the save button
+	// If there is no area (because screen always exists at least one) disable the save button
 	$("#saveCondition").prop("disabled", $("#conditionAreaList").val() === null);
 }
 
-//Save
+// Save
 function saveCondition() {
 	conditionTypeId = parseInt($("#conditionTypeList").val());
 	conditionNegate = $("#conditionNegate").is(":checked");
 	
 	if ($("#saveCondition").closest("dialog").hasClass("add")) {
 		if (!currentConditionList) {
-			//We are creating a condition for a mixture:
+			// We are creating a condition for a mixture:
 			var obj1 = $("#mixture1List").val();
 			var obj2 = $("#mixture2List").val();
 			if (!stage.mixtures[obj1]) {
@@ -269,7 +269,7 @@ function saveConditionAreaHasState() {
 	currentConditionList[$("#conditionId").val()].state = $("#conditionAreaStateList").val();
 }
 
-//Deletes the idCondition from conditionList and updates the conditionListDOM if provided
+// Deletes the idCondition from conditionList and updates the conditionListDOM if provided
 function delCondition(idCondition, conditionList, conditionListDOM) {
 	conditionList.splice(idCondition, 1);
 	if (conditionListDOM) {

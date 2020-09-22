@@ -113,6 +113,16 @@ $(document).ready(function(){
 				" (" + getText(stage.stageName) + ")" : "");
 	});
 	
+	$("#stageVersion").change(function(){
+		// Check that the new value follows the format major.minor
+		if (/^[0-9]+\.[0-9]+$/.test($("#stageVersion").val())) {
+			$("#stageVersion").data("old", $("#stageVersion").val());
+			stage.version = $("#stageVersion").val();
+		} else {
+			$("#stageVersion").val($("#stageVersion").data("old"));
+		}
+	});
+	
 	$("#canvasWidth").change(function(){
 		stage.width = parseInt($("#canvasWidth").val());
 		scaleCanvas();
@@ -138,7 +148,6 @@ var currentScreen, currentArea, currentState, currentInteraction, currentConditi
 	currentActionList, currentActionListDOM, currentObject, currentTrigger, currentTriggerId, currentCharacter,
 	currentCharacterId, currentTalk, currentTalkId, currentAnswer;
 var currentScreenId, currentAreaId, currentStateId, currentInteractionsNumberDOM, currentInteractionList;
-var defaultLanguage;
 
 //If refresh then the events won't be loaded again
 function init(refresh) {
@@ -149,7 +158,8 @@ function init(refresh) {
 			objectives: {},
 			mixtures: {},
 			triggers: [],
-			version: VERSION,
+			engineVersion: VERSION,
+			version: "0.0",
 			folderName: stagename,
 			width: 960,
 			texts: {},
@@ -163,13 +173,11 @@ function init(refresh) {
 	
 	updateToLastVersion();
 
-	//Default language is loaded at beginning and not changed until reloading/reseting
-	defaultLanguage = stage.defaultLanguage;
-	$("#defaultLanguage").attr("src", "../img/flags/" + defaultLanguage + ".png");
+	$("#defaultLanguage").attr("src", "../img/flags/" + stage.defaultLanguage + ".png");
 
 	scaleCanvas();
 	
-	//Load the other Javascript functions the first time the page is started
+	// Load the other Javascript functions the first time the page is started
 	if (!refresh) {
 		loadScreensJS();
 		loadClickablesJS();
@@ -188,6 +196,8 @@ function init(refresh) {
 	$("#folderName").val(stage.folderName);
 	$("#folderName").change();
 	$("#stageName").val(getText(stage.stageName));
+	$("#stageVersion").val(stage.version);
+	$("#stageVersion").data("old", stage.version);
 	$("#stageName").change();
 	$("#canvasWidth").val(stage.width ? stage.width : 960);
 	$("#canvasWidth").change();
@@ -197,7 +207,7 @@ function init(refresh) {
 	loadObjectives($("#objectiveList"));
 	loadMixtures();
 	loadCharacters($("#characterList"));
-	loadLanguages($("#languageList"), defaultLanguage);
+	loadLanguages($("#languageList"), stage.defaultLanguage);
 	loadConditionTypes();
 	loadActionTypes();
 }

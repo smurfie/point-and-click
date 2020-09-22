@@ -26,22 +26,22 @@ function fulfillCondition(condition) {
 }
 
 function fulfillConditionHasObject(condition) {
-	for (var i=0; i<inventory.length; i++) {
-		if (inventory[i].object===condition.object) {
-			return inventory[i].num>=condition.num;
+	for (var i=0; i<savegame.inventory.length; i++) {
+		if (savegame.inventory[i].object===condition.object) {
+			return savegame.inventory[i].num>=condition.num;
 		}
 	}
 	return false;
 }
 
 function fulfillConditionObjectiveCompleted(condition) {
-	return objectivesCompleted[condition.objective] != null;
+	return savegame.objectivesCompleted[condition.objective] != null;
 }
 
 function fulfillConditionAreaHasState(condition) {
-	var area = stage.screens[condition.screen].areas[condition.area];
-	if (!area.currentState) {
-		area.currentState = area.defaultState;
-	}
-	return area.currentState == condition.state;
+	var stateId = savegame.screens[condition.screen] && 
+				savegame.screens[condition.screen].areas[condition.area] &&
+				savegame.screens[condition.screen].areas[condition.area].stateId ?
+				savegame.screens[condition.screen].areas[condition.area].stateId : "default";
+	return stateId === condition.state;
 }

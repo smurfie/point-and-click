@@ -12,7 +12,7 @@ function loadInteractionsEditorJS() {
 		$("#addInteractionConditionButton, #addInteractionActionButton").prop("disabled", !hasValue);
 		
 		if (hasValue) {
-			currentInteraction = currentInteractionList[$(this).val()];
+			currentInteraction = stage.interactions[currentInteractionList[$(this).val()]];
 			$("#interactionOnlyOnce").prop("checked", currentInteraction.onlyOnce);
 			
 			//Load Conditions
@@ -26,12 +26,23 @@ function loadInteractionsEditorJS() {
 		}
 	});
 	
-	$("#addInteractionButton").click(function(){
-		currentInteractionList.push({
+	$("#addInteractionButton").click(function() {
+		var interactionId = randomString(8);
+		// If after 10 tries we don't generated a non existing id, let's resign.
+		for (var i=0; i<10 && stage.interactions[interactionId]; i++) {
+			interactionId = randomString(8);
+		}
+		if (stage.interactions[interactionId]) {
+			throw "I don't believed it error!"
+		}
+
+		stage.interactions[interactionId] = {
 			onlyOnce: false,
 			conditions: [],
 			actions: []
-		});
+		}
+		currentInteractionList.push(interactionId);
+
 		var i = currentInteractionList.length-1;
 		var option = $("<option value='" + i + "'>" + i + "</option>");
 		option.prop("title", i);
@@ -42,7 +53,7 @@ function loadInteractionsEditorJS() {
 		$("#interactionOnlyOnce").prop("checked", false);
 	});
 	
-	$("#delInteractionButton").click(function(){
+	$("#delInteractionButton").click(function() {
 		var sure = confirm("Sure you want to delete this interaction?");
 		if (sure) {
 			delInteraction($("#interactionList").val(), currentInteractionList, $("#interactionList"));
@@ -102,7 +113,7 @@ function loadActions(select, actions, actionId) {
 }
 
 function delInteraction(interactionId, interactionList, interactionListDOM) {
-	var interaction = interactionList[interactionId];
+	var interaction = stage.interactions[interactionList[interactionId]];
 	
 	//We have to delete recursively all conditions and actions first
 	if (interaction.conditions) {
@@ -117,6 +128,7 @@ function delInteraction(interactionId, interactionList, interactionListDOM) {
 		}
 	}
 	
+	delete stage.interactions[interactionList[interactionId]];
 	interactionList.splice(interactionId, 1);
 	if (interactionListDOM) {
 		loadInteractions(interactionListDOM, interactionList);

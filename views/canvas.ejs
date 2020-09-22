@@ -7,7 +7,6 @@
 		<link rel="icon" type="image/svg+xml" href="/img/favicon.svg">
 		<link rel="stylesheet" type="text/css" href="/lib/dialog-polyfill/dialog-polyfill.css" />
 		<link rel="stylesheet" type="text/css" href="/css/main.css">
-		<jsp:include page="includes/analytics.jsp" />
 	</head>
 	<body>
 		<div id="canvas"></div>
@@ -20,8 +19,14 @@
 		</div>
 		<div id="inventory"></div>
 		<p id="text"></p>
+		<img id="optionsImg" src="/img/menu/options.png"/>
 		<div id="options">
 			<div id="languageOptions"></div>
+			<div id="savegameSlots">
+				<% for(var i=0; i<6; i++) { %>
+				<div class="slot" data-slot="<%= i %>"></div>
+				<% } %>
+			</div>
 			<div id="okCancelOptions">
 				<img id="cancelOption" src="/img/menu/cancel.png" />
 				<img id="okOption" src="/img/menu/ok.png" />
@@ -45,4 +50,5 @@
 	<script src="/js/cursors.js"></script>
 	<script src="/js/languages.js"></script>
 	<script src="/js/util.js"></script>
+	<script src="/js/savegame.js"></script>
 </html>

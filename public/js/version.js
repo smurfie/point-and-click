@@ -1,7 +1,8 @@
 function updateToLastVersion() {
 	var versionError = false;
-	while (!versionError && stage.version !== VERSION) {
-		switch (stage.version) {
+	var version = typeof stage.version === "number" ? stage.version : stage.engineVersion;
+	while (!versionError && version !== VERSION) {
+		switch (version) {
 		case 20151115:
 			console.log("Updating from 20151115 to 20160114...");
 			versionError = !updateFrom20151115To20160114();
@@ -46,11 +47,20 @@ function updateToLastVersion() {
 			console.log("Updating from 20200917 to 20200918...");
 			versionError = !updateFrom20200917To20200918();
 			break;
+		case 20200918:
+			console.log("Updating from 20200918 to 20200920...");
+			versionError = !updateFrom20200918To20200920();
+			break;
+		case 20200920:
+			console.log("Updating from 20200920 to 20200922...");
+			versionError = !updateFrom20200920To20200922();
+			break;
 		default:
 			console.log("Error: Version not Found.");
 			versionError = true;
 			break;
 		}
+		version = typeof stage.version === "number" ? stage.version : stage.engineVersion;
 	}
 }
 
@@ -91,18 +101,17 @@ function updateFrom20151115To20160114() {
 	return true;
 }
 
-// Now screens have more than image. Change the img parameter for a list of images and add a default image
+// Now screens have more than one image. Change the img parameter for a list of images and add a default image
 function updateFrom20160114To20160302() {
 	for (var key in stage.screens) {
 		if (stage.screens.hasOwnProperty(key)) {
 			var screen = stage.screens[key];
 			var img = screen.img;
-			var imgName = img.substring(0,img.indexOf("."));
 			screen.images = {};
 			var imageId = randomString(8);
 			screen.images[imageId] = {};
 			screen.images[imageId].img = img;
-			screen.images[imageId].name = imgName;
+			screen.images[imageId].name = img;
 			screen.defaultImage = imageId;
 			delete screen.img;
 		}
@@ -199,8 +208,7 @@ function updateFrom20160410To20160808() {
 // Added languages and translations
 function updateFrom20160808To20160810() {
 	stage.texts = {};
-	defaultLanguage = "en_US";
-	stage.defaultLanguage = defaultLanguage;
+	stage.defaultLanguage = "en_US";
 	stage.languages = {
 		"en_US": "English"
 	};
@@ -343,5 +351,68 @@ function updateFrom20200917To20200918() {
 	}
 	
 	stage.version = 20200918;
+	return true;
+}
+
+// Move all interactions to the root
+function updateFrom20200918To20200920() {
+	stage.interactions = {};
+	
+	for (var screen in stage.screens) {
+		if (stage.screens.hasOwnProperty(screen)) {
+			for (var area in stage.screens[screen].areas) {
+				if (stage.screens[screen].areas.hasOwnProperty(area)) {
+					stage.screens[screen].areas[area].interactions = 
+							moveToRoot(stage.screens[screen].areas[area].interactions);
+				}
+			}
+		}
+	}
+
+	for (var object1 in stage.mixtures) {
+		if (stage.mixtures.hasOwnProperty(object1) && object1 !== "description") {
+			for (var object2 in stage.mixtures[object1]) {
+				if (stage.mixtures[object1].hasOwnProperty(object2) && object2 !== "description") {
+					stage.mixtures[object1][object2].interactions = 
+							moveToRoot(stage.mixtures[object1][object2].interactions);
+				}
+			}
+		}
+	}
+
+	for (var talk in stage.talks) {
+		if (stage.talks.hasOwnProperty(talk)) {
+			for (var i = 0; i < stage.talks[talk].answers.length; i++) {
+				stage.talks[talk].answers[i].interactions =
+						moveToRoot(stage.talks[talk].answers[i].interactions);
+			}
+		}
+	}
+	
+	stage.version = 20200920;
+	return true;
+}
+
+function moveToRoot(interactions) {
+	var interactionsModified = [];
+	for (var i = 0; i < interactions.length; i++) {
+		var interactionId = randomString(8);
+		// If after 10 tries we don't generated a non existing id, let's resign.
+		for (var j=0; j<10 && stage.interactions[interactionId]; j++) {
+			interactionId = randomString(8);
+		}
+		if (stage.interactions[interactionId]) {
+			throw new Error("unbelievable odd probability error!");
+		}
+
+		stage.interactions[interactionId] = interactions[i];
+		interactionsModified.push(interactionId);
+	}
+	return interactionsModified;
+}
+
+function updateFrom20200920To20200922() {
+	stage.engineVersion = 20200922;
+	stage.version = "0.0";
 	return true;
 }

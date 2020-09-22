@@ -139,6 +139,20 @@ body {
 	padding: 10px;
 	color: yellow;
 	height: 43px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#optionsImg {
+	position: absolute;
+	top: 544px;
+	left: 1146px;
+	background-color: black;
+	height: 43px;
+	width: 43px;
+	padding: 5px;
+	cursor: pointer;
 }
 
 .inventorySlot {
@@ -194,7 +208,8 @@ body {
 	display: none;
 }
 
-#languageOptions {
+#languageOptions,
+#savegameSlots {
 	padding: 20px;
 	text-align: center;
 }
@@ -217,11 +232,11 @@ body {
 }
 
 #languageOptions a.active {
-	background-color: gray;
+	background-color: forestgreen;
 }
 
 #languageOptions a:not(.active):hover {
-	background-color: crimson;
+	background-color: greenyellow;
 }
 
 #languageOptions a img {
@@ -229,10 +244,45 @@ body {
 	height: 50px;
 }
 
+#savegameSlots .slot {
+	width: 250px;
+	padding: 15px;
+	margin: 10px;
+	display: inline-block;
+	border-radius: 5px;
+	background: lightgray;
+}
+
+#savegameSlots .slot img {
+	padding: 5px;
+	border-radius: 5px;
+	width: 70px;
+	cursor: pointer;
+}
+
+#savegameSlots .slot img + img {
+	width: 30px;
+	margin-left: 30px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+
+#savegameSlots .slot img:hover {
+	background-color: darkgray;
+}
+
+#savegameSlots .slot p {
+	font-size: 12px;
+    margin: 0 0 10px 0;
+}
+
 #okCancelOptions img {
 	width: 64px;
 	cursor: pointer;
 	position: absolute;
+	border-radius: 5px;
+    background: lightgray;
+    padding: 10px;
 }
 
 #okCancelOptions img#okOption {

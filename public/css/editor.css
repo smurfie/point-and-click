@@ -21,6 +21,10 @@ html {
 	width: 150px;
 }
 
+#stageVersion {
+	width: 100px;
+}
+
 #canvasWidth {
 	width: 135px;
 }

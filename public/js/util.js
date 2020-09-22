@@ -35,14 +35,15 @@ function getAllInteractions() {
 	return all;
 }
 
-//Returns the property of an area in the passed stateId.
-//If it doesn't exists returns that property for the default stateId
+// Returns the property of an area in the passed stateId.
+// If it doesn't exists returns that property for the default stateId
 function getAreaStateProperty(areaId, stateId, property) {
 	if (areaId === "onLoad") {
 		return "";
 	}
 	
-	var value = currentScreen.areas[areaId].states[stateId][property];
+	var screen = typeof savegame === "undefined" ? currentScreen : stage.screens[savegame.screenId];
+	var value = screen.areas[areaId].states[stateId][property];
 	
 	// When consulting the description we have to get it from the texts object
 	if (value && property === "description") {
@@ -50,7 +51,7 @@ function getAreaStateProperty(areaId, stateId, property) {
 	}
 	
 	if (typeof value === "undefined" || value === "") {
-		value = currentScreen.areas[areaId].states["default"][property];
+		value = screen.areas[areaId].states["default"][property];
 		if (value && property === "description") {
 			value = getText(value);
 		}
@@ -65,4 +66,16 @@ function isAbsolutePath(url) {
 
 function unescapeNewLinesHTML(text) {
 	return text.replace(/\n/g, '<br>');
+}
+
+// Creates the screen and the area if needed in the savegame
+function createScreenArea(screen, area) {
+	if (!savegame.screens[screen]) {
+		savegame.screens[screen] = {
+			areas: {}
+		};
+	}
+	if (area && !savegame.screens[screen].areas[area]) {
+		savegame.screens[screen].areas[area] = {};
+	}
 }
