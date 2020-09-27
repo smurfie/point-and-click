@@ -62,7 +62,7 @@ Being `http://localhost:3000` the base url you can type directly right after:
 ## Main window
 The editor window is divided in 3 zones
 
-![main-window](./img/main-window.png)
+<kbd>![main-window](./img/main-window.png)<kbd>
 
 - The [canvas](#canvas)
 - a [menu](#down-menu) on its bottom 
@@ -71,7 +71,7 @@ The editor window is divided in 3 zones
 ### Canvas
 The canvas is where you can see how you screen will look like. Basically you can see the background of the [Screen](#screens) and the different[areas](#areas):
 
-![canvas](./img/canvas.png)
+<kbd>![canvas](./img/canvas.png)<kbd>
 
 As you can see the areas had a sorrounding box. With line:
 - yellow for normal areas
@@ -84,7 +84,7 @@ These lines can be hidden from the [down menu](#down-menu). Moreover if you clic
 ### Down menu
 The menu in the bottom is where the general game properties are:
 
-![down-menu](./img/down-menu.png)
+<kbd>![down-menu](./img/down-menu.png)<kbd>
 
 1. Folder name of your game: (i.e: if your game resides in `public/stage/safari` then your folder name is `safari`)
 2. Stage name: This is what will appear as the title of the game
@@ -110,7 +110,7 @@ The menu in the bottom is where the general game properties are:
 ### Right menu
 The menu in the right is where all the *magic* happens. You can do a lot of things here. For easier use it is divided in these submenus:
 
-![right-menu](./img/right-menu.png)
+<kbd>![right-menu](./img/right-menu.png)<kbd>
 
 1. [Screens](#screens)
 2. [Areas](#areas)
@@ -133,7 +133,7 @@ Here you can add screens(zones/locations) to your game.
 #### Areas
 Here you can add areas (boxes/squares) to your screens. Areas are zone where the user can click (or will be able to click further in the game). Areas can contain images.
 
-![areas](./img/areas.png)
+<kbd>![areas](./img/areas.png)<kbd>
 
 1. From here you manage the list of areas
 2. From here you manage the list of states of each area. A state contains these parameters:
