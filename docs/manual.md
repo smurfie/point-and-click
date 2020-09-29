@@ -16,6 +16,8 @@
     - [Characters and Talks](#characters-and-talks)
     - [Languages](#languages)
     - [Interactions](#interactions)
+        - [Conditions](#conditions)
+        - [Actions](#actions)
 
 ## How to Install
 To install the engine in your local computer you only need to have [nodeJS](https://nodejs.org/en/) installed on your computer. Download the project in a Zip file or clone the repo and run:
@@ -99,10 +101,10 @@ The menu in the bottom is where the general game properties are:
     - No lines: shows all areas without sorrounding boxes
     - No lines-visible: shows only the visible areas without sorrounding boxes
 7. Try it! Button: Opens a new window to try quickly the game you are editing<sup>*</sup>
-8. Get json Button: Opens a dialog with the json containing all the game. From here you can:
+8. Get json Button: Opens a dialog with the json containing all the game. Here you can:
     - copy and paste it in the `stage.json` file inside your game [folder](#folder-structure)
     - click save and it will download a `stage.json` file for you to copy inside your game [folder](#folder-structure)
-9. Load json Button: From here you can load a `stage.json` file
+9. Load json Button: Here you can load a `stage.json` file
 10. Restore json Button: 
 
 *: You can use it to quickly check your changes but once validated it is recommended to get the json and save it to the folder of your game. You can always visit the most updated version of the game going to `http://localhost:3000/game/folder-name` as described in [urls](#url-structure) section
@@ -126,7 +128,7 @@ Here you can add screens(zones/locations) to your game.
 
 <kbd>![screens](./img/screens.png)</kbd>
 
-1. From here you manage the list of screens. Each one has a name and an [image](#images)
+1. Here you manage the list of screens. Each one has a name and an [image](#images)
 2. Mark this to mark your initial screen (the one where you have the game to start). Last one marked will prevail
 3. A screen can have various images. Imagine a room with a door: you can have one image with the room open and another with the room closed. Or one image if later in the game the night falls. Here you can manage the list of images and mark one as default. Later you could change the image in the game via [interactions](#interactions)
 
@@ -135,8 +137,9 @@ Here you can add areas (boxes/squares) to your screens. Areas are zone where the
 
 <kbd>![areas](./img/areas.png)</kbd>
 
-1. From here you manage the list of areas
-2. From here you manage the list of states of each area. A state contains these parameters:
+1. Here you manage the list of areas
+2. Here you manage the list of states of each area. All areas have a default state and you can add as many as you want. For each non-default state, the default state parameters are taken as defaults (forgive the redundancy). A state contains these parameters:
+    - name
     - image
     - description
     - coordinates (x, y)
@@ -145,16 +148,58 @@ Here you can add areas (boxes/squares) to your screens. Areas are zone where the
     - alpha parameter
     - cursor
     - is hidden parameter
-
-All areas have a default state and you can add as many as you want. For each non-default state, the default state parameters are taken as defaults (forgive the redundancy)
-
-. Each one has a name and an [image](#images)
-
+3. A default transparent base64 image is set but you can add any  [image](#images)
+4. The description that will appear when you hover over the area
+5. Coordinates (x, y) and size (height, width) are easier set with the mouse in the [canvas](#canvas) window. Dragging the area you can set the coordinates, and expanding it from the down-right corner you can set the size.
+6. Setting the z-index (natural numbers) you can control what areas appear in fornt of which areas. As bigger the z-index more nearer to the user will be the area. Setting the alpha parameter (decimal number from 0 to 1) you can control the transparency of the area being 0 totally transparent and 1 totally opaque (i.e: you can create ghosts setting it 0.5)
+7. You can set if an object is visible or not for the user (it can be usefull for showing it later with some [interaction](#interactions)) and also how changes the mouse pointer when the user hovers over it:
+    - NONE: the cursor don't change
+    - HAND: usefull for objects you can pick up
+    - BUBBLE: usefull for characters and conversations
+    - EYE: usefull for inspecting areas
+    - ARROW_UP, ARROW_RIGHT, ARROW_DOWN, ARROW_LEFT: usefull for navigation between screens
+8. Here you can manage [interactions](#interactions)
 
 #### Objects
+Here you can manage the objects of the inventory.
+
+<kbd>![objects](./img/objects.png)</kbd>
+
+1. Here you manage the objects names
+2. Set an [image](#images)
+3. Set a description for when you hover over it or you select it
+4. Here you can manage if you have more than one object of the same kind (stacks)
+5. For each stack you have to select how many objects of the same kind to apply it (it is important to enter the stacks in ascending order)
+6. You can set a different [image](#images). I.e: when you have more than 10 coins you can use an image with a pile of coins
+7. You can set a different description too. I.e: lots of coins
+
 #### Objectives
+Here you can manage the objectives of the game.
+
+<kbd>![objectives](./img/objectives.png)</kbd>
+
+Objectives are useful for [interaction conditions](#conditions). In some cases you have to change some behaviour if the user had done something then you can use an objective.
+
+For example imagine that a character in the game `X` tells you that he needs a haircut. In another screen you found a barber shop. You can set an objective `barberShopFound` and mark it as completed when you inspect this barber shop. Later when you return to `X` you can see new conversation option that unlocks only when the objective `barberShopFound`is completed: `If you go down this street you will find a barber shop`
+
 #### Mixtures
+Here you can manage the mixtures/combinations of the game. A mixture is when in the game the user selects an object of the inventory and combines it with another object of the inventory or with a screen area.
+
+<kbd>![mixtures](./img/mixtures.png)</kbd>
+
+1. Here you can write a default messages for all mixtures that don't an interaction
+2. Here you select the mixture:
+    - A mixture is composed of the object the user selects first (first list) and the object or area the user want to interact with (second list)
+    - Each one of the lists have a filter field and the second list have the option to hide all the elements that starts with `goTo` (to take advantage of this option you have to name the areas of the screen than leads to movement between screens with `goTo`. I.e: `goToKitchen`)
+    - The elements with green background of the first list are those than either have an interaction with an element of the second list or have a default description (3)
+    - The elements with green background of the second list are those than have an interaction with a element of the first list
+    - If you create an interaction between two objects (not an object and an area) the interaction between `obj1` and `obj2` is created. The interaction between `obj2` and `obj1` altough it isn't created will be executed when playing the game unless you create a different interaction between `obj2` and `obj1` then this one will take preference. I. e: you create an interaction between `scissors` and `paper` to cut the paper in two. This action will be executed if the user selects first the scissors or if selects first the paper. But if you create another interaction between `paper` and `scissor` to wrap the scissors in paper then it depends on the first selection of the user which action is executed
+3. Here you can write a default message for the selected object of the first list that don't have an interaction
+4. Here you can manage [interactions](#interactions)
+
 #### Triggers
 #### Characters and Talks
 #### Languages
 #### Interactions
+##### Conditions
+##### Actions
