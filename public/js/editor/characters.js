@@ -29,7 +29,7 @@ function loadCharactersJS() {
 		$("#characterFontColorDiv").css("backgroundColor", $("#characterFontColor").val());
 		if ($("#mainCharacter").is(":checked")) {
 			stage.mainCharacter = currentCharacterId;
-			$("#mainCharacter").prop("disabled", true);
+			$("#mainCharacter, #delCharacterButton").prop("disabled", true);
 		}
 	});
 	
@@ -298,16 +298,13 @@ function loadCharacterImgDOM() {
 }
 
 function delCharacter(characterId) {
-	var character = stage.characters[characterId];
-	
-	delText(character.name);
-	
 	for (var key in stage.talks) {
 		if (stage.talks.hasOwnProperty(key) && stage.talks[key].characterId === characterId) {
 			delTalk(key);
 		}
 	}
 	
+	delText(stage.characters[characterId].name);
 	delete stage.characters[characterId];
 	loadCharacters($("#characterList"));
 }

@@ -198,6 +198,10 @@ Here you can manage the mixtures/combinations of the game. A mixture is when in 
 4. Here you can manage [interactions](#interactions)
 
 #### Triggers
+Here you can manage the triggers of the game. Triggers are very similar to [interactions](#interactions). Each time an [action](#action) is executed the game checks which triggers have all their [conditions](#conditions) evaluated to true and for these triggers execute their [actions](#action). When you create or edit a trigger it is recommended than you select to be executed only once (if not the trigger will be executed after each user action if their conditions are all true) or add some interaction to invalidate one of the trigger conditions.
+
+<kbd>![mixtures](./img/mixtures.png)</kbd>
+
 #### Characters and Talks
 #### Languages
 #### Interactions
