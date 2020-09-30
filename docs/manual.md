@@ -14,6 +14,7 @@
     - [Mixtures](#mixtures)
     - [Triggers](#triggers)
     - [Characters and Talks](#characters-and-talks)
+        - [Talks](#talks)
     - [Languages](#languages)
     - [Interactions](#interactions)
         - [Conditions](#conditions)
@@ -161,7 +162,7 @@ Here you can add areas (boxes/squares) to your screens. Areas are zone where the
 8. Here you can manage [interactions](#interactions)
 
 #### Objects
-Here you can manage the objects of the inventory.
+Here you can manage the inventory objects.
 
 <kbd>![objects](./img/objects.png)</kbd>
 
@@ -174,7 +175,7 @@ Here you can manage the objects of the inventory.
 7. You can set a different description too. I.e: lots of coins
 
 #### Objectives
-Here you can manage the objectives of the game.
+Here you can manage the game objectives.
 
 <kbd>![objectives](./img/objectives.png)</kbd>
 
@@ -183,7 +184,7 @@ Objectives are useful for [interaction conditions](#conditions). In some cases y
 For example imagine that a character in the game `X` tells you that he needs a haircut. In another screen you found a barber shop. You can set an objective `barberShopFound` and mark it as completed when you inspect this barber shop. Later when you return to `X` you can see new conversation option that unlocks only when the objective `barberShopFound`is completed: `If you go down this street you will find a barber shop`
 
 #### Mixtures
-Here you can manage the mixtures/combinations of the game. A mixture is when in the game the user selects an object of the inventory and combines it with another object of the inventory or with a screen area.
+Here you can manage the game mixtures/combinations. A mixture is when in the game the user selects an object of the inventory and combines it with another object of the inventory or with a screen area.
 
 <kbd>![mixtures](./img/mixtures.png)</kbd>
 
@@ -198,11 +199,34 @@ Here you can manage the mixtures/combinations of the game. A mixture is when in 
 4. Here you can manage [interactions](#interactions)
 
 #### Triggers
-Here you can manage the triggers of the game. Triggers are very similar to [interactions](#interactions). Each time an [action](#action) is executed the game checks which triggers have all their [conditions](#conditions) evaluated to true and for these triggers execute their [actions](#action). When you create or edit a trigger it is recommended than you select to be executed only once (if not the trigger will be executed after each user action if their conditions are all true) or add some interaction to invalidate one of the trigger conditions.
+Here you can manage the game triggers. Triggers are very similar to [interactions](#interactions). Each time an [action](#action) is executed the game checks which triggers have all their [conditions](#conditions) evaluated to true and for these triggers execute their [actions](#action). When you create or edit a trigger it is recommended than you select to be executed only once (if not the trigger will be executed after each user action if their conditions are all true) or add some interaction to invalidate one of the trigger conditions.
 
 <kbd>![mixtures](./img/mixtures.png)</kbd>
 
 #### Characters and Talks
+Here you can manage the game characters and talks/conversations
+
+<kbd>![characters-and-talks](./img/characters-and-talks.png)</kbd>
+
+1. Here you manage the characters. By default the first character you add is the main character but you can change it later
+2. Set an [image](#images) for the character
+3. Set a font color for the character
+4. Set the default character. There is only one main character and the only difference between the other characters is that when it talks, his name is not shown (because you know who you are)
+5. Here you manage the [talks](#talks). If a talk has multiple responses there is a `(M)` at the beggining of the dropdown.
+
+##### Talks
+A talk is a character saying something. If the list of possible options (the ones which their conditions are all true) of a talk is only one the character will say the response automatically. Otherwise, the player will choose which option the character will say (it applies to all characters not only to the main one). It is recommended that one option is always possible.
+
+<kbd>![talks](./img/talks.png)</kbd>
+
+Once you edit a talk you can set different things:
+
+<kbd>![talk-options](./img/talk-options.png)</kbd>
+
+1. The sentence to be said
+2. [Conditions](#conditions) to show the answer
+3. [Interactions](#interactions) to execute once the answer is said (choosen manually or automatically)
+
 #### Languages
 #### Interactions
 ##### Conditions
