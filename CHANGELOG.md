@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-10-01:
+- Update Manual
+
 ## 2020-09-30:
 - Fix bug deleting characters
 - Update Manual

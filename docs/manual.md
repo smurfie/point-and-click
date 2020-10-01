@@ -18,7 +18,20 @@
     - [Languages](#languages)
     - [Interactions](#interactions)
         - [Conditions](#conditions)
+            - [Has object](#has-object)
+            - [Objective completed](#objective-completed)
+            - [Area has state](#area-has-state)
         - [Actions](#actions)
+            - [Go to](#go-to)
+            - [Pick up object](#pick-up-object)
+            - [Remove object](#remove-object)
+            - [Hide area](#hide-area)
+            - [Show area](#show-area)
+            - [Show text](#show-text)
+            - [Complete objective](#complete-objective)
+            - [Area change state](#area-change-state)
+            - [Screen change image](#screen-change-image)
+            - [Talk](#talk)
 
 ## How to Install
 To install the engine in your local computer you only need to have [nodeJS](https://nodejs.org/en/) installed on your computer. Download the project in a Zip file or clone the repo and run:
@@ -228,6 +241,133 @@ Once you edit a talk you can set different things:
 3. [Interactions](#interactions) to execute once the answer is said (choosen manually or automatically)
 
 #### Languages
+Here you can manage the game languages/translations/i18n. By default the english language is selected.
+
+<kbd>![languages](./img/languages.png)</kbd>
+
+1. Here you can manage the game translations (actually only english, catalan and spanish are supported)
+2. You can set the default language in which you are editing the game
+3. When you want to translate your game you have to follow this procedure:
+    1. Export will create a file with all texts with its translations if already translated earlier or with the default language text otherwise
+    2. You have to translate the texts of the file following the format `idxxxx|||text_to_translate|||`. It is important that you don't change the ids neither the separators (the final one is important to manage multiline texts) neither add blank spaces
+    3. Import the file with the translations in the desired language and you are set!
+
 #### Interactions
+Interactions can be defined in varius menus in the editor but they all are the same. A list of interactions are defined and the first of them that all their [conditions](#conditions) are true gets all its [actions](#actions) are executed.
+
+<kbd>![interactions](./img/interactions.png)</kbd>
+
+1. Here you can manage the list of interactions. Remember that the order that you define them is important because it will only be executed the first one which their [conditions](#conditions) are all true.
+2. You can set an interaction to be executed only once. Once executed it will never be executed again.
+3. Here you can manage the list of [conditions](#conditions)
+4. Here you can manage the list of [actions](#actions)
+
 ##### Conditions
+There are three types of conditions, all of them can be negated (having a total of 6 types of conditions):
+1. [Has object](#has-object)
+2. [Objective completed](#objective-completed)
+3. [Area has state](#area-has-state)
+
+###### Has object
+Return true if the user have the desired number of objects in the inventory.
+
+<kbd>![has-object](./img/has-object.png)</kbd>
+
+Select the desired object and the number of object of that type.
+
+###### Objective completed
+Return true if the user has completed the selected objective.
+
+<kbd>![objective-completed](./img/objective-completed.png)</kbd>
+
+Select the objective.
+
+###### Area has state
+Return true if the selected area has the selected state.
+
+<kbd>![area-has-state](./img/area-has-state.png)</kbd>
+
+Select the screen to update the list of areas, then select the area and finally select the state.
+
 ##### Actions
+There are ten types of actions:
+1. [Go to](#go-to)
+2. [Pick up object](#pick-up-object)
+3. [Remove object](#remove-object)
+4. [Hide area](#hide-area)
+5. [Show area](#show-area)
+6. [Show text](#show-text)
+7. [Complete objective](#complete-objective)
+8. [Area change state](#area-change-state)
+9. [Screen change image](#screen-change-image)
+10. [Talk](#talk)
+
+###### Go to
+Sends the player to the selected screen.
+
+<kbd>![go-to](./img/go-to.png)</kbd>
+
+Select the screen.
+
+###### Pick up object
+Adds to the inventory the selected number of objects
+
+<kbd>![pick-up-object](./img/pick-up-object.png)</kbd>
+
+Select the object and the number of items to add to the inventory.
+
+###### Remove object
+Remove from the inventory the selected number of objects.
+
+<kbd>![remove-object](./img/remove-object.png)</kbd>
+
+Select the object and the number of items to remove from the inventory (It is recommended to check that the user [Has that many objects](#has-object)).
+
+###### Hide area
+Hides/Removes an area to the player, making impossible to select it.
+
+<kbd>![hide-area](./img/hide-area.png)</kbd>
+
+Select the screen to update the list of areas, then select the area to hide.
+
+###### Show area
+Shows an area to the player (usually a hidden one), making possible to select it.
+
+<kbd>![show-area](./img/show-area.png)</kbd>
+
+Select the screen to update the list of areas, then select the area to show.
+
+###### Show text
+Shows a text to the player via a dialog box.
+
+<kbd>![show-text](./img/show-text.png)</kbd>
+
+Write the text to show. It can contain line breaks.
+
+###### Complete objective
+Marks an objective as completed.
+
+<kbd>![complete-objective](./img/complete-objective.png)</kbd>
+
+Select the objective to complete.
+
+###### Area change state
+Changes the state of an area to the selected one.
+
+<kbd>![area-change-state](./img/area-change-state.png)</kbd>
+
+Select the screen to update the list of areas, then select the area and finally select the state.
+
+###### Screen change image
+Changes the screen image to the selected one.
+
+<kbd>![screen-change-image](./img/screen-change-image.png)</kbd>
+
+Select the screen, then select the [image](#screens).
+
+###### Talk
+Starts a conversation with the given talk.
+
+<kbd>![talk](./img/talk.png)</kbd>
+
+Select the talk to start the conversation with. You can filter for any word appearing in the conversation, even for the character or the `(M)` that means that has multiple options.
