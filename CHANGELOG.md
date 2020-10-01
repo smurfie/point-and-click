@@ -1,6 +1,14 @@
 # Changelog
 
-## TODO
+## 2020-10-01:
+- Update Manual
+
+## 2020-09-30:
+- Fix bug deleting characters
+- Update Manual
+
+## 2020-09-29:
+- Fix bug when empty descriptions or urls
 - Update Manual
 
 ## 2020-09-22:
