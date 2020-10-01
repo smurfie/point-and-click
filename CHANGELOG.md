@@ -2,6 +2,7 @@
 
 ## 2020-10-01:
 - Update Manual
+- Add links to homepage
 
 ## 2020-09-30:
 - Fix bug deleting characters
