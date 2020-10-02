@@ -150,6 +150,7 @@ function loadCharactersJS() {
 		$("#answerText").val(getText(currentAnswer.text));
 		loadConditions($("#answerConditionList"), currentAnswer.conditions);
 		$("#answerInteractionsButton .interactionsNumber").text(currentAnswer.interactions.length);
+		$("#answerInteractionsButton").prop("disabled", false);
 		
 		$("#answerEditor")[0].showModal();
 	});

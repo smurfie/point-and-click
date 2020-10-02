@@ -1,5 +1,8 @@
 # Changelog
 
+## 2020-10-02:
+- Fix interactions button disabled when editing talk
+
 ## 2020-10-01:
 - Update Manual
 - Add links to homepage
