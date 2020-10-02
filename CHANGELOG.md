@@ -6,6 +6,7 @@
 - Fix save button disabled when selecting talk
 - Fix hidden field default value
 - Fix new trigger not being selected
+- Change talks to multiple combobox
 
 ## 2020-10-01:
 - Update Manual

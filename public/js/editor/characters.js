@@ -1,6 +1,6 @@
 function loadCharactersJS() {
 	// Characters
-	$("#characterList").change(function(){
+	$("#characterList").change(function() {
 		var hasValue = $(this).val() != null;
 		if (hasValue) {
 			currentCharacterId = $(this).val();
@@ -21,7 +21,7 @@ function loadCharactersJS() {
 		$("#characterTalks").toggle(hasValue);
 	});
 	
-	$(".updateCharacter").change(function(){
+	$(".updateCharacter").change(function() {
 		currentCharacter.img = $("#characterImg").val();
 		currentCharacter.fontColor = $("#characterFontColor").val();
 		loadCharacterImgDOM();
@@ -33,14 +33,14 @@ function loadCharactersJS() {
 		}
 	});
 	
-	$("#editCharacterButton").click(function(){
+	$("#editCharacterButton").click(function() {
 		$("#characterId").val(currentCharacterId);
 		$("#characterName").val(getText(currentCharacter.name));
 		$("#characterEditor").removeClass("add");
 		$("#characterEditor")[0].showModal();
 	});
 	
-	$("#addCharacterButton").click(function(){
+	$("#addCharacterButton").click(function() {
 		if (!stage.characters) {
 			stage.characters = {};
 		}
@@ -58,7 +58,7 @@ function loadCharactersJS() {
 		$("#characterEditor")[0].showModal();
 	});
 	
-	$("#delCharacterButton").click(function(){
+	$("#delCharacterButton").click(function() {
 		var sure = confirm("The character and all his talks will be deleted. Are you sure?");
 		if (sure) {
 			delCharacter(currentCharacterId);
@@ -85,7 +85,7 @@ function loadCharactersJS() {
 	});
 	
 	// Talks
-	$("#talkList").change(function(){
+	$("#talkList").change(function() {
 		var hasValue = $(this).val() != null;
 		if (hasValue) {
 			currentTalkId = $(this).val();
@@ -96,7 +96,7 @@ function loadCharactersJS() {
 		$("#delTalkButton").prop("disabled", !hasValue);
 	});
 	
-	$("#editTalkButton").click(function(){
+	$("#editTalkButton").click(function() {
 		$("#talkId").val(currentTalkId);
 		loadAnswers($("#answerList"), currentTalk.answers);
 		
@@ -104,7 +104,7 @@ function loadCharactersJS() {
 		$("#talkEditor")[0].showModal();
 	});
 	
-	$("#addTalkButton").click(function(){
+	$("#addTalkButton").click(function() {
 		if (!stage.talks) {
 			stage.talks = {};
 		}
@@ -123,15 +123,21 @@ function loadCharactersJS() {
 		$("#talkEditor")[0].showModal();
 	});
 	
-	$("#delTalkButton").click(function(){
+	$("#delTalkButton").click(function() {
 		var sure = confirm("The talk and all his interactions and answers will be deleted. Are you sure?");
 		if (sure) {
 			delTalk($("#talkList").val());
 		}
 	});
+
+	$("#talksFilter").on("input",function() {
+		$("#talkList option").each(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf($("#talksFilter").val().toLowerCase())>=0);
+		})
+	});
 	
 	// Answers / Options
-	$("#answerList").change(function(){
+	$("#answerList").change(function() {
 		var hasValue = $("#answerList").val() !== null;
 		$("#editAnswerButton").prop("disabled", !hasValue);
 		$("#delAnswerButton").prop("disabled", !hasValue);
