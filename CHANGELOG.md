@@ -2,6 +2,7 @@
 
 ## 2020-10-02:
 - Fix interactions button disabled when editing talk
+- Make filters case insensitive
 
 ## 2020-10-01:
 - Update Manual

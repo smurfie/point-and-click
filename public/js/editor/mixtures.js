@@ -95,13 +95,13 @@ function loadMixturesJS() {
 	//Mix Filters
 	$("#mixture1Filter").on("input",function(){
 		$("#mixture1List option").each(function(){
-			$(this).toggle($(this).text().indexOf($("#mixture1Filter").val())>=0);
+			$(this).toggle($(this).text().toLowerCase().indexOf($("#mixture1Filter").val().toLowerCase())>=0);
 		})
 	});
 	
 	$("#mixture2Filter").on("input",function(){
 		$("#mixture2List option").each(function(){
-			$(this).toggle($(this).text().indexOf($("#mixture2Filter").val())>=0);
+			$(this).toggle($(this).text().toLowerCase().indexOf($("#mixture2Filter").val().toLowerCase())>=0);
 		})
 	});
 	
