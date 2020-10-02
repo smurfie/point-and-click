@@ -165,7 +165,8 @@ function loadClickablesJS() {
 						"height": 50,
 						"zindex": 1,
 						"alpha": 1,
-						"cursor": CURSORS.EYE
+						"cursor": CURSORS.EYE,
+						"hidden": false
 					}
 				},
 				"interactions": []

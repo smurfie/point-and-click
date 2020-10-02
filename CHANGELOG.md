@@ -4,6 +4,7 @@
 - Fix interactions button disabled when editing talk
 - Make filters case insensitive
 - Fix save button disabled when selecting talk
+- Fix hidden field default value
 
 ## 2020-10-01:
 - Update Manual
