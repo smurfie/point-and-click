@@ -7,6 +7,7 @@
 - Fix hidden field default value
 - Fix new trigger not being selected
 - Change talks to multiple combobox
+- Change the talk filter to behave like the other filters (the option remains selected even if hidden)
 
 ## 2020-10-01:
 - Update Manual

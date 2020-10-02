@@ -84,19 +84,12 @@ function loadActionsEditorJS() {
 		$("#saveAction").prop("disabled", $(this).is(":visible") && $(this).val()==null);
 	});
 
-	$("#actionTalkList").change(function() {
-		$("#saveAction").prop("disabled", false);
-	});
-	
 	// Filters
 	$("#filterTalk").on("input", function() {
 		var filter = $(this).val();
 		$("#actionTalkList option").each(function(){
 			$(this).toggle($(this).text().toLowerCase().indexOf(filter.toLowerCase()) >= 0);
 		});
-		
-		// If the selected option is not visible disable the save button
-		$("#saveAction").prop("disabled", !$("#actionTalkList option:selected").is(":visible"));
 	});
 }
 
