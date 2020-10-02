@@ -83,6 +83,10 @@ function loadActionsEditorJS() {
 	$("#actionAreaStateList").change(function() {
 		$("#saveAction").prop("disabled", $(this).is(":visible") && $(this).val()==null);
 	});
+
+	$("#actionTalkList").change(function() {
+		$("#saveAction").prop("disabled", false);
+	});
 	
 	// Filters
 	$("#filterTalk").on("input", function() {
