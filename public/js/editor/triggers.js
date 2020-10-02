@@ -48,6 +48,7 @@ function loadTriggersJS() {
 	});
 	
 	$("#saveTrigger").click(function() {
+		var currentTriggerId = $("#triggerId").val();
 		if ($(this).closest("dialog").hasClass("add")) {
 			stage.triggers.push({
 				name: $("#triggerName").val(),

@@ -38,7 +38,7 @@ function loadObjectivesJS() {
 		var objectiveId = $("#objectiveId").val();
 		if ($(this).closest("dialog").hasClass("add")) {
 			stage.objectives[objectiveId] = { "name": $("#objectiveName").val() };
-			loadObjectives($("#objectiveList"), objectiveId);			
+			loadObjectives($("#objectiveList"), objectiveId);
 		} else {
 			stage.objectives[objectiveId].name = $("#objectiveName").val();
 			$("#objectiveList :selected").html($("#objectiveName").val());

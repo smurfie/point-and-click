@@ -5,6 +5,7 @@
 - Make filters case insensitive
 - Fix save button disabled when selecting talk
 - Fix hidden field default value
+- Fix new trigger not being selected
 
 ## 2020-10-01:
 - Update Manual
